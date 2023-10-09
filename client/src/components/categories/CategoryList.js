@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react"
-import { fetchCategories } from "../../managers/categoryManager";
-import { Table } from "reactstrap";
+import { deleteCategory, fetchCategories } from "../../managers/categoryManager";
+import { Button, Table } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 
 export const CategoryList = () => {
     const [categories, setCategories] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetchCategories().then(setCategories);
     }, []);
+
+    const handleDelete = (id) => {
+        deleteCategory(id).then(() => {
+            navigate("/categories");
+        })
+    }
 
     return (
         <div className="container">
@@ -26,6 +35,14 @@ export const CategoryList = () => {
                             <tr key={`categories-${c.id}`}>
                                 <th scope="row">{c.id}</th>
                                 <td>{c.name}</td>
+                                <td>
+                                    <Button
+                                        color="danger"
+                                        onClick={() => {
+                                            handleDelete(c.id);
+                                        }}
+                                    >Delete</Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
