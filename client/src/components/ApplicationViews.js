@@ -5,7 +5,11 @@ import Register from "./auth/Register";
 import UserProfileList from "./userprofiles/UserProfilesList";
 import UserProfileDetails from "./userprofiles/UserProfileDetails";
 import { CategoryList } from "./categories/CategoryList";
+
 import { PostList } from "./posts/PostList";
+
+import { TagList } from "./tags/TagList";
+
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
  return (
@@ -37,6 +41,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
       }
      />
 
+
      <Route
       path=":id"
       element={
@@ -66,4 +71,29 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
    <Route path="*" element={<p>Whoops, nothing here...</p>} />
   </Routes>
  );
+
+        <Route path="tags">
+          <Route
+            index
+            element={
+              <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                <TagList />
+              </AuthorizedRoute>
+            }
+          />
+        </Route>
+
+        <Route
+          path="login"
+          element={<Login setLoggedInUser={setLoggedInUser} />}
+        />
+        <Route
+          path="register"
+          element={<Register setLoggedInUser={setLoggedInUser} />}
+        />
+      </Route>
+      <Route path="*" element={<p>Whoops, nothing here...</p>} />
+    </Routes>
+  );
+
 }

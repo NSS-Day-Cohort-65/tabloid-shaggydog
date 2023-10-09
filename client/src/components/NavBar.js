@@ -34,12 +34,54 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
          </NavLink>
         </NavItem>
 
+
         {loggedInUser.roles.includes("Admin") && (
          <NavItem>
           <NavLink tag={RRNavLink} to="/userprofiles">
            User Profiles
           </NavLink>
          </NavItem>
+
+                {loggedInUser.roles.includes("Admin") && (
+                  <NavItem>
+                    <NavLink tag={RRNavLink} to="/categories">
+                      Categories
+                    </NavLink>
+                  </NavItem>
+                )}
+
+                {loggedInUser.roles.includes("Admin") && (
+                  <NavItem>
+                    <NavLink tag={RRNavLink} to="/tags">
+                      Tag Management
+                    </NavLink>
+                  </NavItem>
+                )}
+              </Nav>
+            </Collapse>
+            <Button
+              color="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                logout().then(() => {
+                  setLoggedInUser(null);
+                  setOpen(false);
+                });
+              }}
+            >
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Nav navbar>
+            <NavItem>
+              <NavLink tag={RRNavLink} to="/login">
+                <Button color="primary">Login</Button>
+              </NavLink>
+            </NavItem>
+          </Nav>
+
         )}
 
         {loggedInUser.roles.includes("Admin") && (
