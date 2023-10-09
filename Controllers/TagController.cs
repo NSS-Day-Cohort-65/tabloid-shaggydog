@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tabloid.Data;
 using Tabloid.Models;
 
@@ -24,5 +25,21 @@ public class TagController : ControllerBase
     {
         return Ok(_dbContext.Tags
         .OrderBy(t => t.Name));
+    }
+
+    [HttpPost]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult CreateTag(Tag tag)
+    {
+        try
+        {
+            _dbContext.Tags.Add(tag);
+            _dbContext.SaveChanges();
+            return Created($"api/tag/{tag.Id}", tag);
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
     }
 }
