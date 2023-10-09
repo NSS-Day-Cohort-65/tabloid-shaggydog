@@ -478,3 +478,10 @@ $RECYCLE.BIN/
 Migrations/20231009192359_initialCreate.cs
 Migrations/20231009192359_initialCreate.Designer.cs
 Migrations/TabloidDbContextModelSnapshot.cs
+Migrations/TabloidDbContextModelSnapshot.cs
+.gitignore
+Migrations/20231009202545_initialCreate.cs
+Migrations/20231009202545_initialCreate.Designer.cs
+Migrations/TabloidDbContextModelSnapshot.cs
+Migrations/TabloidDbContextModelSnapshot.cs
+Migrations/TabloidDbContextModelSnapshot.cs
