@@ -189,7 +189,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             new PostReaction { Id = 6, PostId = 2, ReactionId = 6 },
             new PostReaction { Id = 7, PostId = 3, ReactionId = 6 },
             new PostReaction { Id = 8, PostId = 4, ReactionId = 6 },
-            new PostReaction { Id = 9, PostId = 5, ReactionId = 6 },
+            new PostReaction { Id = 9, PostId = 4, ReactionId = 6 },
             new PostReaction { Id = 10, PostId = 4, ReactionId = 3 },
             new PostReaction { Id = 11, PostId = 3, ReactionId = 5 },
             new PostReaction { Id = 12, PostId = 2, ReactionId = 6 },
