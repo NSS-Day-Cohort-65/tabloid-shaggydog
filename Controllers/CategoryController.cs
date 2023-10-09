@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tabloid.Data;
 using Tabloid.Models;
 
@@ -26,6 +27,42 @@ public class CategoryController : ControllerBase
         return Ok(_dbContext.Categories);
     }
 
+    [HttpPost]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult CreateCategory(Category category)
+    {
+        try 
+        {
+            _dbContext.Categories.Add(category);
+            _dbContext.SaveChanges();
+            return Created($"api/category/{category.Id}", category);
+        }
+        catch(DbUpdateException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpPut("{id}")]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult EditCategory(int id, Category category)
+    {
+        Category matchingCategory = _dbContext.Categories.SingleOrDefault(c => c.Id == id);
+        if (matchingCategory == null)
+        {
+            return NotFound();
+        }
+        if (category.Id == id)
+        {
+            return BadRequest();
+        }
+
+        matchingCategory.Name = category.Name;
+        _dbContext.SaveChanges();
+        return NoContent();
+    }
+
+
     [HttpDelete("{id}")]
     // [Authorize(Roles = "Admin")]
     public IActionResult DeleteCategory(int id)
@@ -38,6 +75,11 @@ public class CategoryController : ControllerBase
         }
 
         _dbContext.Categories.Remove(categoryToDelete);
+
+        _dbContext.Posts
+            .Where(p => p.CategoryId == categoryToDelete.Id).ToList()
+            .ForEach(p => p.CategoryId = null);
+
         _dbContext.SaveChanges();
         return NoContent();
     }
