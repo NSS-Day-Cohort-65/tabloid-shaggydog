@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Tabloid.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Tabloid.Data;
 public class TabloidDbContext : IdentityDbContext<IdentityUser>
@@ -145,5 +146,42 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 IdentityUserId = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
             }
         });
+
+        modelBuilder.Entity<Category>().HasData(new Category []
+        {
+            new Category {Id = 1, Name = "Science"}, 
+            new Category {Id = 2, Name = "Comedy"}, 
+            new Category {Id = 3, Name = "Food"},
+            new Category {Id = 4, Name = "Community"}, 
+            new Category {Id = 5, Name = "Technology"}
+        });
+
+        modelBuilder.Entity<Reaction>().HasData(new Reaction []
+        {
+            new Reaction {Id = 1, Name = "Like", ImageLocation = "https://www.svgrepo.com/show/449925/thumbs-up.svg" },
+            new Reaction {Id = 2, Name = "Dislike", ImageLocation ="https://www.svgrepo.com/show/449926/thumbs-down.svg"},
+            new Reaction {Id = 3, Name = "Love", ImageLocation ="https://www.svgrepo.com/show/343415/in-love-emoji-emoticon-feeling-face-smile.svg"},
+            new Reaction {Id = 4, Name = "Laugh", ImageLocation ="https://www.svgrepo.com/show/492553/laugh-and-cry.svg"},
+            new Reaction {Id = 5, Name = "Hate", ImageLocation ="https://www.svgrepo.com/show/404720/angry-face.svg"},
+            new Reaction {Id = 6, Name = "Crying", ImageLocation ="https://www.svgrepo.com/show/405163/crying-face.svg"},
+            new Reaction {Id = 7, Name = "Wow", ImageLocation ="https://www.svgrepo.com/show/303213/facebook-wow-logo.svg"}
+        });
+
+        modelBuilder.Entity<Tag>().HasData(new Tag []
+        {
+            new Tag {Id = 1, Name = "#Spicy"},
+            new Tag {Id = 2, Name = "#Hipster"},
+            new Tag {Id = 3, Name = "#Coffee"},
+            new Tag {Id = 4, Name = "#Cozy"},
+            new Tag {Id = 5, Name = "#Cute"},
+            new Tag {Id = 6, Name = "#Zesty"},
+            new Tag {Id = 7, Name = "#Lit"},
+            new Tag {Id = 7, Name = "#Slay"},
+        });
+
+    //     modelBuilder.Entity<Post>().HasData(new Post []
+    //     {
+    //         new Post {Id = 1, Title = "", Content ="", ImageLocation ="", CreateDateTime = new DateTime(2023, 01, 01), PublishDateTime = new DateTime(2023, 01, 02)}
+    //     });
     }
 }
