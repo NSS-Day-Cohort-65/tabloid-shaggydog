@@ -9,7 +9,6 @@ namespace Tabloid.Models
         public string Title { get; set; }
         [Required]
         public string Content { get; set; }
-        [Required]
         public string ImageLocation { get; set; }
         public DateTime CreateDateTime { get; set; }
         public DateTime PublishDateTime { get; set; }
