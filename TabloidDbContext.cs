@@ -176,12 +176,123 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             new Tag {Id = 5, Name = "#Cute"},
             new Tag {Id = 6, Name = "#Zesty"},
             new Tag {Id = 7, Name = "#Lit"},
-            new Tag {Id = 7, Name = "#Slay"},
+            new Tag {Id = 8, Name = "#Slay"},
         });
 
-    //     modelBuilder.Entity<Post>().HasData(new Post []
-    //     {
-    //         new Post {Id = 1, Title = "", Content ="", ImageLocation ="", CreateDateTime = new DateTime(2023, 01, 01), PublishDateTime = new DateTime(2023, 01, 02)}
-    //     });
+        modelBuilder.Entity<PostReaction>().HasData(new PostReaction[]
+        {
+            new PostReaction { Id = 1, PostId = 1, ReactionId = 1 },
+            new PostReaction { Id = 2, PostId = 2, ReactionId = 2 },
+            new PostReaction { Id = 3, PostId = 2, ReactionId = 4 },
+            new PostReaction { Id = 4, PostId = 1, ReactionId = 3 },
+            new PostReaction { Id = 5, PostId = 1, ReactionId = 6 },
+            new PostReaction { Id = 6, PostId = 2, ReactionId = 6 },
+            new PostReaction { Id = 7, PostId = 3, ReactionId = 6 },
+            new PostReaction { Id = 8, PostId = 4, ReactionId = 6 },
+            new PostReaction { Id = 9, PostId = 5, ReactionId = 6 },
+            new PostReaction { Id = 10, PostId = 4, ReactionId = 3 },
+            new PostReaction { Id = 11, PostId = 3, ReactionId = 5 },
+            new PostReaction { Id = 12, PostId = 2, ReactionId = 6 },
+            new PostReaction { Id = 13, PostId = 1, ReactionId = 7 },
+
+        });
+
+        modelBuilder.Entity<Comment>().HasData(new Comment[]
+        {
+            new Comment {
+                Id = 1, 
+                PostId = 1, 
+                UserProfileId = 1,
+                Subject = "Coffee", 
+                Content = "I love Mocha", 
+                CreateDateTime = new DateTime(2023,10,9,11,41,0)},
+            new Comment {
+                Id = 2, 
+                PostId = 2, 
+                UserProfileId = 3,
+                Subject = "Zest", 
+                Content = "Keepin it Zesty", 
+                CreateDateTime = new DateTime(2023,10,9,11,30,0)},
+             new Comment {
+                Id = 3, 
+                PostId = 3, 
+                UserProfileId = 2,
+                Subject = "DOGGY!", 
+                Content = "Did dog go poo poo?", 
+                CreateDateTime = new DateTime(2023,10,9,11,24,0)},
+            new Comment {
+                Id = 4, 
+                PostId = 4, 
+                UserProfileId = 2,
+                Subject = "OOGA BOOGA", 
+                Content = "MONKEY MONKEY RAN", 
+                CreateDateTime = new DateTime(2023,10,9,11,5,0)},
+        });
+
+        modelBuilder.Entity<Subscription>().HasData(new Subscription[]
+        {
+            new Subscription { Id = 1, SubscriberUserProfileId = 1, ProviderUserProfileId =2, BeginDateTime = new DateTime(2023,10,7)},
+            new Subscription { Id = 2, SubscriberUserProfileId = 2, ProviderUserProfileId =1, BeginDateTime = new DateTime(2023,10,7)},
+            new Subscription { Id = 3, SubscriberUserProfileId = 3, ProviderUserProfileId =4, BeginDateTime = new DateTime(2023,10,7)},
+            new Subscription { Id = 4, SubscriberUserProfileId = 4, ProviderUserProfileId =1, BeginDateTime = new DateTime(2023,10,7)} 
+        });
+
+        modelBuilder.Entity<PostTag>().HasData(new PostTag[]
+        {
+            new PostTag { Id =1, PostId =1, TagId =1},
+            new PostTag { Id =2, PostId =2, TagId =2},
+            new PostTag { Id =3, PostId =3, TagId =3},
+            new PostTag { Id =4, PostId =4, TagId =4},
+            new PostTag { Id =5, PostId =1, TagId =2},
+            new PostTag { Id =6, PostId =2, TagId =3},
+            new PostTag { Id =7, PostId =3, TagId =4},
+        });
+
+        modelBuilder.Entity<Post>().HasData(new Post []
+        {
+            new Post {
+            Id = 1, 
+            Title = "Pumpkin Spice Season!", 
+            Content ="OMG, it's officially pumpkin spice latte season, babes! 🎃☕️ Fall vibes are in the air, and I couldn't be more pumped! Grab your coziest sweater, slip on those knee-high boots, and let's embrace the basic life together! 💁‍♀️🍂 Pumpkin spice and everything nice, amirite? 🧡 #PSL #FallVibes #BasicAndProud", 
+            ImageLocation = "https://chocolatecoveredkatie.com/wp-content/uploads/2023/08/Pumpkin-Spice-Latte-Recipe-jpg.webp", 
+            CreateDateTime = new DateTime(2023, 01, 01), 
+            PublishDateTime = new DateTime(2023, 01, 02),
+            IsApproved = true,
+            CategoryId = 1,
+            UserProfileId =1,
+            },
+
+            new Post {
+            Id = 2, 
+            Title = "Meet My Furry BFF: Mr. Fluffykins the Golden Doodle! 🐾💕", 
+            Content ="Just welcomed the newest member of the fam into my life, and I'm OBSESSED! Meet Mr. Fluffykins, my adorable golden doodle puppy! 🐶💕 He's basically a teddy bear come to life, and I can't handle the cuteness. Get ready for all the puppy spam, folks! 📸✨ #GoldenDoodleLove #PuppyParent #FurBaby", ImageLocation = "https://www.happygodoodle.com/wp-content/uploads/2022/07/apricot-goldendoodle-cuddled-in-womans-arms-puppy-socialization-good-breeder-dp.jpg", 
+            CreateDateTime = new DateTime(2023, 01, 03), PublishDateTime = new DateTime(2023, 01, 04),
+            IsApproved = true,
+            CategoryId = 2,
+            UserProfileId =2,
+            },
+            
+            new Post {
+            Id = 3, 
+            Title = "Sunny Sunday Paw-ty at the Dog Park! 🌞🐾", 
+            Content ="Sunday Funday with my fur baby! 🌞🐶 Took Mr. Fluffykins to the dog park, and he's making new friends left and right. 🐾❤️ What's your favorite way to spend a sunny Sunday? #DogParkAdventures #PuppyLove #FurryFriends", 
+            ImageLocation ="https://www.puppies.co.uk/media/announcement_categories/2021/1/goldendoodle-4110__w780_h780_c.jpg", 
+            CreateDateTime = new DateTime(2023, 01, 05), PublishDateTime = new DateTime(2023, 01, 06),
+            IsApproved = true,
+            CategoryId = 3,
+            UserProfileId =3,
+            },
+
+            new Post {
+            Id = 4, 
+            Title = "Chasing Dreams at the Grand Canyon: A Memory Worth Every Step! 🌄✨", 
+            Content ="Just crossed off a major bucket list item – the Grand Canyon! 😍🏜️ Standing on the edge of this natural wonder left me absolutely speechless. Mother Nature, you're a true artist! 🎨✨ Hiking, breathtaking views, and unforgettable memories - this trip had it all! Who else has experienced the awe of the Grand Canyon? Share your favorite moments! 🌄❤️ #GrandCanyonAdventure #BucketListChecked #NatureLover", 
+            ImageLocation ="https://cdn.outsideonline.com/wp-content/uploads/2022/08/grand-canyon-square.jpg", 
+            CreateDateTime = new DateTime(2023, 01, 07), PublishDateTime = new DateTime(2023, 01, 08),
+            IsApproved = true,
+            CategoryId = 4,
+            UserProfileId =4,
+            }
+        });
     }
 }
