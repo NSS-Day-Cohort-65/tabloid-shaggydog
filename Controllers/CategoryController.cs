@@ -22,6 +22,6 @@ public class CategoryController : ControllerBase
     // [Authorize]
     public IActionResult Get()
     {
-        return Ok(_dbContext.Categories)
+        return Ok(_dbContext.Categories);
     }
 }
