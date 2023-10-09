@@ -1,3 +1,4 @@
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { AuthorizedRoute } from "./auth/AuthorizedRoute";
 import Login from "./auth/Login";
@@ -5,11 +6,8 @@ import Register from "./auth/Register";
 import UserProfileList from "./userprofiles/UserProfilesList";
 import UserProfileDetails from "./userprofiles/UserProfileDetails";
 import { CategoryList } from "./categories/CategoryList";
-
 import { PostList } from "./posts/PostList";
-
 import { TagList } from "./tags/TagList";
-
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
  return (
@@ -40,8 +38,6 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
        </AuthorizedRoute>
       }
      />
-
-
      <Route
       path=":id"
       element={
@@ -51,7 +47,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
       }
      />
     </Route>
-    <Route path="categories">
+    <Route path="/categories">
      <Route
       index
       element={
@@ -61,39 +57,26 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
       }
      />
     </Route>
-
-    <Route path="login" element={<Login setLoggedInUser={setLoggedInUser} />} />
+    <Route path="/tags">
+     <Route
+      index
+      element={
+       <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+        <TagList />
+       </AuthorizedRoute>
+      }
+     />
+    </Route>
     <Route
-     path="register"
+     path="/login"
+     element={<Login setLoggedInUser={setLoggedInUser} />}
+    />
+    <Route
+     path="/register"
      element={<Register setLoggedInUser={setLoggedInUser} />}
     />
    </Route>
    <Route path="*" element={<p>Whoops, nothing here...</p>} />
   </Routes>
  );
-
-        <Route path="tags">
-          <Route
-            index
-            element={
-              <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                <TagList />
-              </AuthorizedRoute>
-            }
-          />
-        </Route>
-
-        <Route
-          path="login"
-          element={<Login setLoggedInUser={setLoggedInUser} />}
-        />
-        <Route
-          path="register"
-          element={<Register setLoggedInUser={setLoggedInUser} />}
-        />
-      </Route>
-      <Route path="*" element={<p>Whoops, nothing here...</p>} />
-    </Routes>
-  );
-
 }
