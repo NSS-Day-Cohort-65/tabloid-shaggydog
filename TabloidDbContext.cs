@@ -181,19 +181,18 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<PostReaction>().HasData(new PostReaction[]
         {
-            new PostReaction { Id = 1, PostId = 1, ReactionId = 1 },
-            new PostReaction { Id = 2, PostId = 2, ReactionId = 2 },
-            new PostReaction { Id = 3, PostId = 2, ReactionId = 4 },
-            new PostReaction { Id = 4, PostId = 1, ReactionId = 3 },
-            new PostReaction { Id = 5, PostId = 1, ReactionId = 6 },
-            new PostReaction { Id = 6, PostId = 2, ReactionId = 6 },
-            new PostReaction { Id = 7, PostId = 3, ReactionId = 6 },
-            new PostReaction { Id = 8, PostId = 4, ReactionId = 6 },
-            new PostReaction { Id = 9, PostId = 4, ReactionId = 6 },
-            new PostReaction { Id = 10, PostId = 4, ReactionId = 3 },
-            new PostReaction { Id = 11, PostId = 3, ReactionId = 5 },
-            new PostReaction { Id = 12, PostId = 2, ReactionId = 6 },
-            new PostReaction { Id = 13, PostId = 1, ReactionId = 7 },
+            new PostReaction { Id = 1, PostId = 1, ReactionId = 1, UserProfileId = 1},
+            new PostReaction { Id = 2, PostId = 2, ReactionId = 2, UserProfileId = 2},
+            new PostReaction { Id = 3, PostId = 2, ReactionId = 4, UserProfileId = 3},
+            new PostReaction { Id = 4, PostId = 1, ReactionId = 3, UserProfileId = 2},
+            new PostReaction { Id = 5, PostId = 1, ReactionId = 6, UserProfileId = 3},
+            new PostReaction { Id = 6, PostId = 2, ReactionId = 6, UserProfileId = 1},
+            new PostReaction { Id = 7, PostId = 3, ReactionId = 6, UserProfileId = 2},
+            new PostReaction { Id = 8, PostId = 4, ReactionId = 6, UserProfileId = 1},
+            new PostReaction { Id = 9, PostId = 4, ReactionId = 3, UserProfileId = 2},
+            new PostReaction { Id = 10, PostId = 3, ReactionId = 5, UserProfileId =4},
+            new PostReaction { Id = 11, PostId = 2, ReactionId = 6, UserProfileId =5},
+            new PostReaction { Id = 12, PostId = 1, ReactionId = 7, UserProfileId =6},
 
         });
 
