@@ -24,20 +24,21 @@ public class CategoryController : ControllerBase
     // [Authorize]
     public IActionResult Get()
     {
-        return Ok(_dbContext.Categories);
+        return Ok(_dbContext.Categories
+        .OrderBy(c => c.Name));
     }
 
     [HttpPost]
     // [Authorize(Roles = "Admin")]
     public IActionResult CreateCategory(Category category)
     {
-        try 
+        try
         {
             _dbContext.Categories.Add(category);
             _dbContext.SaveChanges();
             return Created($"api/category/{category.Id}", category);
         }
-        catch(DbUpdateException)
+        catch (DbUpdateException)
         {
             return NotFound();
         }
