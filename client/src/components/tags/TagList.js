@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { fetchTag, fetchTags, postTag } from "../../managers/tagManager";
-import { Alert, Button, Form, FormGroup, Input, InputGroup, InputGroupText, Label, Modal, ModalBody, ModalHeader, Table } from "reactstrap";
+import { fetchTag, fetchTags } from "../../managers/tagManager";
+import { Button, Modal, ModalHeader, Table } from "reactstrap";
 import { EditTagModal } from "./EditTagModal";
 import { CreateTagModal } from "./CreateTagModal";
 import { ConfirmDeleteTagModal } from "./ConfirmDeleteTagModal";
@@ -11,7 +11,6 @@ export const TagList = ({ loggedInUser }) => {
     const [tags, setTags] = useState([]);
     const [selectedTag, setSelectedTag] = useState();
 
-    const [newTagName, setNewTagName] = useState("");
     const [createModal, setCreateModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
     const toggle = () => { setCreateModal(!createModal) };
@@ -66,7 +65,8 @@ export const TagList = ({ loggedInUser }) => {
                 </Table>
             </div>
             <Button
-                onClick={toggle}>
+            color="success"
+            onClick={toggle}>
                 Create Tag
             </Button>
             <Modal isOpen={createModal} toggle={toggle}>
