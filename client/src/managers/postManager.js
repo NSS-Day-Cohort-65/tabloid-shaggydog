@@ -7,3 +7,11 @@ export const fetchPosts = () => {
 export const fetchSinglePost = (id) => {
     return fetch(`${_apiURL}/${id}`).then((res) => res.json());
 }
+
+//delete post
+export const deletePost = (post) => {
+ return fetch(`${_apiURL}/${post.id}`, {
+  method: "DELETE",
+ });
+};
+
