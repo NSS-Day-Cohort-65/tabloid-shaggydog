@@ -27,6 +27,19 @@ public class TagController : ControllerBase
         .OrderBy(t => t.Name));
     }
 
+    [HttpGet("{id}")]
+    // [Authorize]
+    public IActionResult GetById(int id)
+    {
+        Tag tag = _dbContext.Tags.SingleOrDefault(t => t.Id == id);
+        if (tag == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(tag);
+    }
+
     [HttpPost]
     // [Authorize(Roles = "Admin")]
     public IActionResult CreateTag(Tag tag)
@@ -41,5 +54,41 @@ public class TagController : ControllerBase
         {
             return BadRequest();
         }
+    }
+
+    [HttpPut("{id}")]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult EditTag(int id, Tag tag)
+    {
+        Tag matchingTag = _dbContext.Tags.SingleOrDefault(t => t.Id == id);
+        if (matchingTag == null)
+        {
+            return NotFound();
+        }
+        if (tag.Id != id)
+        {
+            return BadRequest();
+        }
+
+        matchingTag.Name = tag.Name;
+        _dbContext.SaveChanges();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult DeleteTag(int id)
+    {
+        Tag tagToDelete = _dbContext.Tags.SingleOrDefault(t => t.Id == id);
+
+        if (tagToDelete == null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Tags.Remove(tagToDelete);
+
+        _dbContext.SaveChanges();
+        return NoContent();
     }
 }
