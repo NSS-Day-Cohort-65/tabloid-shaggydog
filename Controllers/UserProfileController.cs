@@ -36,6 +36,7 @@ public class UserProfileController : ControllerBase
         {
             Id = up.Id,
             FirstName = up.FirstName,
+            CreateDateTime = up.CreateDateTime,
             LastName = up.LastName,
             Email = up.IdentityUser.Email,
             UserName = up.IdentityUser.UserName,
