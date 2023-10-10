@@ -5,6 +5,11 @@ export const fetchCategories = () => {
         .then((res) => res.json());
 };
 
+export const fetchCategory = (id) => {
+    return fetch(`${_apiURL}/${id}`)
+        .then((res) => res.json());
+};
+
 export const postCategory = (category) => {
     return fetch(_apiURL, {
         method: "POST",

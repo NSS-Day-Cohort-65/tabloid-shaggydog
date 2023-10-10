@@ -28,6 +28,19 @@ public class CategoryController : ControllerBase
         .OrderBy(c => c.Name));
     }
 
+    [HttpGet("{id}")]
+    // [Authorize]
+    public IActionResult GetById(int id)
+    {
+        Category category = _dbContext.Categories.SingleOrDefault(c => c.Id == id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(category);
+    }
+
     [HttpPost]
     // [Authorize(Roles = "Admin")]
     public IActionResult CreateCategory(Category category)

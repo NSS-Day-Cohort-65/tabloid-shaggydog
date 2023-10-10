@@ -1,49 +1,49 @@
 import { useState } from "react";
-import { Button, Form, FormFeedback, FormGroup, Input, InputGroup, InputGroupText, Label, ModalBody } from "reactstrap"
-import { putTag } from "../../managers/tagManager";
+import { Button, Form, FormFeedback, FormGroup, Input, InputGroup, Label, ModalBody } from "reactstrap"
+import { putCategory } from "../../managers/categoryManager";
 
-export const EditTagModal = ({ tagObject, toggle, getAllTags }) => {
-    const [tag, setTag] = useState(tagObject.name.substring(1));
+export const EditCategoryModal = ({ categoryObject, toggle, getAllCategories }) => {
+    const [category, setCategory] = useState(categoryObject.name);
     const [error, setError] = useState(false);
 
     const handleEdit = () => {
-        const newTag = {
-            id: tagObject.id,
-            name: `#${tag}`
+        const newCategory = {
+            id: categoryObject.id,
+            name: category
         };
 
-        if (!tag) {
+        if (!category) {
             setError(true);
         }
         else {
-            putTag(tagObject.id, newTag)
+            putCategory(categoryObject.id, newCategory)
                 .then(() => {
-                    getAllTags();
+                    getAllCategories();
                     toggle();
                 })
         }
     }
+
 
     return (
         <>
             <ModalBody>
                 <Form>
                     <FormGroup>
-                        <Label htmlFor="tagEdit">Name:</Label>
+                        <Label htmlFor="categoryEdit">Name:</Label>
                         <InputGroup>
-                            <InputGroupText>#</InputGroupText>
                             <Input 
                                 type="text"
-                                name="tagEdit"
-                                defaultValue={tagObject.name.substring(1)}
+                                name="categoryEdit"
+                                defaultValue={categoryObject.name}
                                 invalid={error}
                                 onChange={(e) => {
-                                    setTag(e.target.value);
+                                    setCategory(e.target.value);
                                 }}
                             />
-                            {   
+                            {
                                 error
-                                ? 
+                                ?
                                 <FormFeedback>
                                     Name can't be blank
                                 </FormFeedback>
@@ -53,16 +53,16 @@ export const EditTagModal = ({ tagObject, toggle, getAllTags }) => {
                         </InputGroup>
                     </FormGroup>
                     <Button
-                    color="success"
-                    onClick={() => {
-                        handleEdit();
+                        color="success"
+                        onClick={() => {
+                            handleEdit();
                     }}>
                         Save
                     </Button>
                     <Button
-                    style={{ marginLeft: '10px' }}
-                    color="danger"
-                    onClick={toggle}>
+                        style={{ marginLeft: '10px' }}
+                        color="danger"
+                        onClick={toggle}>
                         Cancel
                     </Button>
                 </Form>

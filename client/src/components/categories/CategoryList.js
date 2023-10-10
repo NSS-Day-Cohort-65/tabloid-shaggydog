@@ -1,41 +1,23 @@
 import { useEffect, useState } from "react"
-import { fetchCategories, deleteCategory, postCategory } from "../../managers/categoryManager";
-import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Table } from "reactstrap";
+import { fetchCategories, deleteCategory, fetchCategory } from "../../managers/categoryManager";
+import {  Button, Modal, ModalHeader, Table } from "reactstrap";
 import { ConfirmDeleteCategoryModal } from "./ConfirmDeleteCategoryModal";
+import { CreateCategoryModal } from "./CreateCategoryModal";
+import { EditCategoryModal } from "./EditCategoryModal";
 
 
 export const CategoryList = ({ loggedInUser }) => {
     const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState();
 
-    const [newCategoryName, setNewCategoryName] = useState("");
     const [createModal, setCreateModal] = useState(false);
-    const [createVisible, setCreateVisible] = useState(false);
-    const onDismiss = () => setCreateVisible(false);
-    const toggle = () => {
-        setCreateModal(!createModal);
-        if (createVisible) setCreateVisible(false);
-    };
+    const [editModal, setEditModal] = useState(false);
+    const toggle = () => {setCreateModal(!createModal)};
+    const editToggle = () => {setEditModal(!editModal)};
 
 
     const getAllCategories = () => {
         fetchCategories().then(setCategories);
-    }
-
-    const handleCreate = () => {
-        if (!newCategoryName) {
-            setCreateVisible(true)
-        }
-        else {
-            const newCategory = {
-                name: newCategoryName
-            };
-
-            postCategory(newCategory)
-                .then(() => {
-                    toggle();
-                    getAllCategories();
-                })
-        }
     }
 
     const handleDelete = (id) => {
@@ -58,6 +40,7 @@ export const CategoryList = ({ loggedInUser }) => {
                             <th>Id #</th>
                             <th>Name</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,47 +48,38 @@ export const CategoryList = ({ loggedInUser }) => {
                             <tr key={`categories-${c.id}`}>
                                 <th scope="row">{c.id}</th>
                                 <td>{c.name}</td>
-                                {loggedInUser?.roles.includes("Admin") ? (
-                                    <ConfirmDeleteCategoryModal category={c} getAllCategories={getAllCategories} />
-                                ) : (
-                                    ""
-                                )}
+                                <td>
+                                    <Button
+                                        color="warning"
+                                        onClick={() => {
+                                            fetchCategory(c.id).then(setSelectedCategory).then(editToggle);
+                                        }}
+                                    >Edit</Button>
+                                </td>
+                                <td>
+                                    {loggedInUser?.roles.includes("Admin") ? (
+                                        <ConfirmDeleteCategoryModal category={c} getAllCategories={getAllCategories} />
+                                    ) : (
+                                        ""
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
             </div>
             <Button
+                color="success"
                 onClick={toggle}>
                 Create Category
             </Button>
             <Modal isOpen={createModal} toggle={toggle}>
-                <div className="alert-float" style={{ position: 'absolute', top: 10, left: 150 }}>
-                    <Alert color="info" isOpen={createVisible} toggle={onDismiss}>
-                        Please enter a name
-                    </Alert>
-                </div>
                 <ModalHeader toggle={toggle}>Add Category</ModalHeader>
-                <ModalBody>
-                    <Form>
-                        <FormGroup>
-                            <Label htmlFor="categoryName">Name:</Label>
-                            <Input
-                                type="text"
-                                name="categoryName"
-                                onChange={(e) => {
-                                    setNewCategoryName(e.target.value);
-                                }}
-                            />
-                        </FormGroup>
-                        <Button
-                        onClick={() => {
-                            handleCreate();
-                        }}>
-                            Save
-                        </Button>
-                    </Form>
-                </ModalBody>
+                <CreateCategoryModal toggle={toggle} getAllCategories={getAllCategories}/>
+            </Modal>
+            <Modal isOpen={editModal} toggle={editToggle}>
+                <ModalHeader toggle={editToggle}>Edit Category</ModalHeader>
+                <EditCategoryModal categoryObject={selectedCategory} toggle={editToggle} getAllCategories={getAllCategories}/>
             </Modal>
         </div>
     )
