@@ -25,7 +25,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
      path="/posts"
      element={
       <AuthorizedRoute loggedInUser={loggedInUser}>
-       <PostList />
+       <PostList loggedInUser={loggedInUser} />
       </AuthorizedRoute>
      }
     />
