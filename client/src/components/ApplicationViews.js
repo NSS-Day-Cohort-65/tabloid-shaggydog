@@ -10,6 +10,7 @@ import { PostList } from "./posts/PostList";
 import { TagList } from "./tags/TagList";
 import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
+import { CreatePost } from "./posts/CreatePost";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -32,10 +33,26 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     }
                 />
                 <Route
+                    path="/posts/:id"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <PostDetails loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
+                />
+                <Route
                  path="myposts"
                  element={
                   <AuthorizedRoute loggedInUser={loggedInUser}>
                    <MyPosts loggedInUser={loggedInUser}/>
+                  </AuthorizedRoute>
+                 }
+                />
+                <Route
+                 path="createpost"
+                 element={
+                  <AuthorizedRoute loggedInUser={loggedInUser}>
+                   <CreatePost loggedInUser={loggedInUser}/>
                   </AuthorizedRoute>
                  }
                 />

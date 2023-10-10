@@ -15,3 +15,14 @@ export const deletePost = (post) => {
  });
 };
 
+//create a post
+export const createPost = (post) => {
+    return fetch(`${_apiURL}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    }).then((res) => res.json()
+    )
+}

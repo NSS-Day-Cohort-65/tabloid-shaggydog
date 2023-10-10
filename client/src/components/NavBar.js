@@ -38,6 +38,11 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
           My Posts
          </NavLink>
         </NavItem>
+        <NavItem>
+         <NavLink tag={RRNavLink} to="/createpost">
+          Make Poost
+         </NavLink>
+        </NavItem>
         {loggedInUser.roles.includes("Admin") && (
          <NavItem>
           <NavLink tag={RRNavLink} to="/userprofiles">
