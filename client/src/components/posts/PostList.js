@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import ConfirmDeletePostModal from "./ConfirmDeletePostModal";
 import { PostTagModalManager } from "./PostTagModalManager";
+import {ReactComponent as CommentsIcon} from '../../svg/commentsIcon.svg';
+
 
 export const PostList = ({ loggedInUser }) => {
- const [posts, setPosts] = useState([]);
+ const [posts, setPosts] = useState();
  const navigate = useNavigate();
 
- console.log(loggedInUser);
+/*  console.log(loggedInUser); */
  async function getData() {
   fetchPosts().then(setPosts);
  }
@@ -18,9 +20,13 @@ export const PostList = ({ loggedInUser }) => {
   getData();
  }, []);
 
+ if (!posts) return;
+
  if (posts.length < 1) {
   return "";
  }
+
+
  return (
   <>
    <h1>Post List</h1>
@@ -48,11 +54,23 @@ export const PostList = ({ loggedInUser }) => {
         ))}
        </div>
       </p>
-      {loggedInUser?.roles.includes("Admin") ? (
-       <ConfirmDeletePostModal post={p} getData={getData} />
-      ) : (
-       ""
-      )}
+      <div className="postFooter">
+        <div>
+            <CommentsIcon />
+            <Button
+                color="info"
+                onClick={() => {
+                    navigate(`/posts/${p.id}/comments`)
+                }}>
+                View Comments
+            </Button>
+        </div>
+        {loggedInUser?.roles.includes("Admin") ? (
+        <ConfirmDeletePostModal post={p} getData={getData} />
+        ) : (
+        ""
+        )}
+      </div>
      </div>
     ))}
    </div>
