@@ -34,4 +34,18 @@ public class PostTagController : ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpDelete("{id}")]
+    // [Authorize]
+    public IActionResult DeletePostTag(int id)
+    {
+        PostTag foundPostTag = _dbContext.PostTags.SingleOrDefault(pt => pt.Id == id);
+        if (foundPostTag == null)
+        {
+            return NotFound();
+        }
+        _dbContext.PostTags.Remove(foundPostTag);
+        _dbContext.SaveChanges();
+        return NoContent();
+    }
 }
