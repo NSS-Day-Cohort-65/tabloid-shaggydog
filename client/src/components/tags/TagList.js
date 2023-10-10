@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { fetchTags, postTag } from "../../managers/tagManager";
 import { Alert, Button, Form, FormGroup, Input, InputGroup, InputGroupText, Label, Modal, ModalBody, ModalHeader, Table } from "reactstrap";
+import { ConfirmDeleteTagModal } from "./ConfirmDeleteTagModal";
 
 
-export const TagList = () => {
+export const TagList = ({ loggedInUser }) => {
     const [tags, setTags] = useState([]);
 
     const [newTagName, setNewTagName] = useState("");
@@ -29,10 +30,10 @@ export const TagList = () => {
             };
 
             postTag(newTag)
-            .then(() => {
-                toggle();
-                getAllTags();
-            })
+                .then(() => {
+                    toggle();
+                    getAllTags();
+                })
 
         }
     }
@@ -50,6 +51,7 @@ export const TagList = () => {
                         <tr>
                             <th>Id #</th>
                             <th>Name</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,17 +59,22 @@ export const TagList = () => {
                             <tr key={`tags-${t.id}`}>
                                 <th scope="row">{t.id}</th>
                                 <td>{t.name}</td>
+                                {loggedInUser?.roles.includes("Admin") ? (
+                                    <ConfirmDeleteTagModal tag={t} getAllTags={getAllTags} />
+                                ) : (
+                                    ""
+                                )}
                             </tr>
                         ))}
                     </tbody>
                 </Table>
             </div>
             <Button
-            onClick={toggle}>
+                onClick={toggle}>
                 Create Tag
             </Button>
             <Modal isOpen={createModal} toggle={toggle}>
-                <div className="alert-float" style={{position: 'absolute', top: 10, left: 150}}>
+                <div className="alert-float" style={{ position: 'absolute', top: 10, left: 150 }}>
                     <Alert color="info" isOpen={createVisible} toggle={onDismiss}>
                         Please enter a name
                     </Alert>
@@ -78,20 +85,20 @@ export const TagList = () => {
                         <FormGroup>
                             <Label htmlFor="tagName">Name:</Label>
                             <InputGroup>
-                            <InputGroupText>#</InputGroupText>
-                                <Input 
-                                type="text"
-                                name="tagName"
-                                onChange={(e) => {
-                                    setNewTagName(e.target.value)
-                                }}
+                                <InputGroupText>#</InputGroupText>
+                                <Input
+                                    type="text"
+                                    name="tagName"
+                                    onChange={(e) => {
+                                        setNewTagName(e.target.value)
+                                    }}
                                 />
                             </InputGroup>
                         </FormGroup>
                         <Button
-                        onClick={() => {
-                            handleCreate();
-                        }}>
+                            onClick={() => {
+                                handleCreate();
+                            }}>
                             Save
                         </Button>
                     </Form>

@@ -42,4 +42,21 @@ public class TagController : ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult DeleteTag(int id)
+    {
+        Tag tagToDelete = _dbContext.Tags.SingleOrDefault(t => t.Id == id);
+
+        if (tagToDelete == null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Tags.Remove(tagToDelete);
+
+        _dbContext.SaveChanges();
+        return NoContent();
+    }
 }
