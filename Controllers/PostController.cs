@@ -58,4 +58,18 @@ public class PostController : ControllerBase
         return NotFound();
 
     }
+
+    //create a post
+    [HttpPost]
+    //[Authorize]
+    public IActionResult PostPost(Post post)
+    {
+        post.CreateDateTime = DateTime.Now;
+        post.PublishDateTime = DateTime.Now;
+        post.IsApproved = true;
+        post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up=> up.Id == post.UserProfileId);
+        _dbContext.Posts.Add(post);
+        _dbContext.SaveChanges();
+        return Created($"api/post/{post.Id}", post);
+    }
 }
