@@ -38,6 +38,16 @@ export const PostList = ({ loggedInUser }) => {
       <h5>Category: {p.category.name}</h5>
       <p>Published: {p.publishDateTime.split("T")[0]}</p>
       <p>Author: {p.userProfile.fullName}</p>
+      <p>
+       Tags :{" "}
+       <div id="tagContainer">
+        {p.postTags.map((pt) => (
+         <p>
+          <span>{pt.tag.name}</span>
+         </p>
+        ))}
+       </div>
+      </p>
       {loggedInUser?.roles.includes("Admin") ? (
        <ConfirmDeletePostModal post={p} getData={getData} />
       ) : (

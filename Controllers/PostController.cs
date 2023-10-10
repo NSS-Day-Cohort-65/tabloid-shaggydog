@@ -24,6 +24,8 @@ public class PostController : ControllerBase
         return Ok(_dbContext.Posts
         .Include(p => p.Category)
         .Include(p => p.UserProfile)
+        .Include(p => p.PostTags)
+        .ThenInclude(pt => pt.Tag)
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
