@@ -10,7 +10,7 @@ export const postCategory = (category) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(category),
-    }).then((res) => {res.json()});
+    }).then((res) => { res.json() });
 };
 
 export const putCategory = (id, category) => {

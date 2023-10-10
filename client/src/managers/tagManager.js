@@ -15,7 +15,7 @@ export const postTag = (tag) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tag),
-    }).then((res) => {res.json()});
+    }).then((res) => { res.json() });
 };
 
 export const putTag = (id, tag) => {
@@ -23,5 +23,11 @@ export const putTag = (id, tag) => {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tag)
+    });
+};
+
+export const deleteTag = (id) => {
+    return fetch(`${_apiURL}/${id}`, {
+        method: "DELETE"
     });
 };
