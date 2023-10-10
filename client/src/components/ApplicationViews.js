@@ -32,28 +32,28 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         </AuthorizedRoute>
                     }
                 />
-   <Route
-     path="/posts/:id"
-     element={
-      <AuthorizedRoute loggedInUser={loggedInUser}>
-       <PostDetails loggedInUser={loggedInUser} />
-      </AuthorizedRoute>
-     }
-    />
                 <Route
-                 path="myposts"
-                 element={
-                  <AuthorizedRoute loggedInUser={loggedInUser}>
-                   <MyPosts loggedInUser={loggedInUser}/>
-                  </AuthorizedRoute>
-                 }
+                    path="/posts/:id"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <PostDetails loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
+                />
+                <Route
+                    path="myposts"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <MyPosts loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
                 />
                 <Route path="/userprofiles">
                     <Route
                         index
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                                <UserProfileList />
+                                <UserProfileList loggedInUser={loggedInUser} roles={["Admin"]} />
                             </AuthorizedRoute>
                         }
                     />

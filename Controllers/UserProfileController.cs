@@ -27,7 +27,7 @@ public class UserProfileController : ControllerBase
     }
 
     [HttpGet("withroles")]
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public IActionResult GetWithRoles()
     {
         return Ok(_dbContext.UserProfiles
@@ -44,7 +44,7 @@ public class UserProfileController : ControllerBase
             .Where(ur => ur.UserId == up.IdentityUserId)
             .Select(ur => _dbContext.Roles.SingleOrDefault(r => r.Id == ur.RoleId).Name)
             .ToList()
-        }));
+        }).OrderBy(up => up.UserName).ToList());
     }
 
     [HttpPost("promote/{id}")]
