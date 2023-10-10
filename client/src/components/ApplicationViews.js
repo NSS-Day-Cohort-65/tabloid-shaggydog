@@ -8,6 +8,7 @@ import UserProfileDetails from "./userprofiles/UserProfileDetails";
 import { CategoryList } from "./categories/CategoryList";
 import { PostList } from "./posts/PostList";
 import { TagList } from "./tags/TagList";
+import { PostDetails } from "./posts/PostDetails";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
