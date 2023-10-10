@@ -27,4 +27,14 @@ public class PostController : ControllerBase
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
+
+    [HttpGet("{id}")]
+    //[Authorize]
+    public IActionResult GetById(int id)
+    {
+        return Ok(_dbContext.Posts
+        .Include(p => p.Category)
+        .Include(p => p.UserProfile)
+        .SingleOrDefault(p => p.Id == id));
+    }
 }
