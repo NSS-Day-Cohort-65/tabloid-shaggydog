@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react"
-import { fetchTags, postTag } from "../../managers/tagManager";
+import { fetchTag, fetchTags, postTag } from "../../managers/tagManager";
 import { Alert, Button, Form, FormGroup, Input, InputGroup, InputGroupText, Label, Modal, ModalBody, ModalHeader, Table } from "reactstrap";
+import { EditTagModal } from "./EditTagModal";
+import { CreateTagModal } from "./CreateTagModal";
 import { ConfirmDeleteTagModal } from "./ConfirmDeleteTagModal";
 
 
 export const TagList = ({ loggedInUser }) => {
     const [tags, setTags] = useState([]);
+    const [selectedTag, setSelectedTag] = useState();
 
     const [newTagName, setNewTagName] = useState("");
     const [createModal, setCreateModal] = useState(false);
-    const [createVisible, setCreateVisible] = useState(false);
-    const onDismiss = () => setCreateVisible(false);
-    const toggle = () => {
-        setCreateModal(!createModal);
-        if (createVisible) setCreateVisible(false);
-    }
+    const [editModal, setEditModal] = useState(false);
+    const toggle = () => { setCreateModal(!createModal) };
+    const editToggle = () => { setEditModal(!editModal) };
+
 
     const getAllTags = () => {
         fetchTags().then(setTags);
@@ -42,6 +43,8 @@ export const TagList = ({ loggedInUser }) => {
         getAllTags();
     }, []);
 
+
+
     return (
         <div className="container">
             <div className="sub-menu bg-light">
@@ -59,6 +62,14 @@ export const TagList = ({ loggedInUser }) => {
                             <tr key={`tags-${t.id}`}>
                                 <th scope="row">{t.id}</th>
                                 <td>{t.name}</td>
+                                <td>
+                                    <Button
+                                        color="warning"
+                                        onClick={() => {
+                                            fetchTag(t.id).then(setSelectedTag).then(editToggle);
+                                        }}
+                                    >Edit</Button>
+                                </td>
                                 {loggedInUser?.roles.includes("Admin") ? (
                                     <ConfirmDeleteTagModal tag={t} getAllTags={getAllTags} />
                                 ) : (

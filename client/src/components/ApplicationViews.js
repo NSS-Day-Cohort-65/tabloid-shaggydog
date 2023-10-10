@@ -8,6 +8,8 @@ import UserProfileDetails from "./userprofiles/UserProfileDetails";
 import { CategoryList } from "./categories/CategoryList";
 import { PostList } from "./posts/PostList";
 import { TagList } from "./tags/TagList";
+import { MyPosts } from "./posts/MyPosts";
+import { PostDetails } from "./posts/PostDetails";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -28,6 +30,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                             <PostList loggedInUser={loggedInUser} />
                         </AuthorizedRoute>
                     }
+                />
+                <Route
+                 path="myposts"
+                 element={
+                  <AuthorizedRoute loggedInUser={loggedInUser}>
+                   <MyPosts loggedInUser={loggedInUser}/>
+                  </AuthorizedRoute>
+                 }
                 />
                 <Route path="/userprofiles">
                     <Route

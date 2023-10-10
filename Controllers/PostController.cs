@@ -27,6 +27,15 @@ public class PostController : ControllerBase
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
+    
+    [HttpGet("{id}")]
+    //[Authorize]
+    public IActionResult GetById(int id)
+    {
+        return Ok(_dbContext.Posts
+        .Include(p => p.Category)
+        .Include(p => p.UserProfile)
+        .SingleOrDefault(p => p.Id == id));
 
     //delete a post
     [HttpDelete("{postId}")]
@@ -41,5 +50,6 @@ public class PostController : ControllerBase
         return NoContent();
         }
         return NotFound();
+
     }
 }

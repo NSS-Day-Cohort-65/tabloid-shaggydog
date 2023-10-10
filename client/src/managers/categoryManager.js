@@ -13,6 +13,14 @@ export const postCategory = (category) => {
     }).then((res) => { res.json() });
 };
 
+export const putCategory = (id, category) => {
+    return fetch(`${_apiURL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(category)
+    });
+};
+
 export const deleteCategory = (id) => {
     return fetch(`${_apiURL}/${id}`, {
         method: "DELETE"
