@@ -15,17 +15,18 @@ export const PostDetails = ({ loggedInUser }) => {
         setTagsModalOpen(!tagsModalOpen)
     }
 
- const getPostById = () => {
-  fetchSinglePost(parseInt(id)).then(setPost);
- };
- console.log(loggedInUser);
- useEffect(() => {
-  getPostById();
- }, []);
 
- if (!post) {
-  return ``;
- }
+    const getPostById = () => {
+        fetchSinglePost(parseInt(id)).then(setPost);
+    };
+    console.log(loggedInUser);
+    useEffect(() => {
+        getPostById();
+    }, []);
+
+    if (!post) {
+        return ``;
+    }
 
  return (
   <>
