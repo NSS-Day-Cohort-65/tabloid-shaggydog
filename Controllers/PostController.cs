@@ -7,7 +7,7 @@ using Tabloid.Models;
 namespace Tabloid.Controllers;
 
 [ApiController]
-[Route ("/api/[controller]")]
+[Route("/api/[controller]")]
 public class PostController : ControllerBase
 {
     private TabloidDbContext _dbContext;
@@ -27,7 +27,7 @@ public class PostController : ControllerBase
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
-    
+
     [HttpGet("{id}")]
     //[Authorize]
     public IActionResult GetById(int id)
@@ -36,6 +36,7 @@ public class PostController : ControllerBase
         .Include(p => p.Category)
         .Include(p => p.UserProfile)
         .SingleOrDefault(p => p.Id == id));
+    }
 
     //delete a post
     [HttpDelete("{postId}")]
@@ -45,9 +46,9 @@ public class PostController : ControllerBase
         var postToDelete = _dbContext.Posts.SingleOrDefault(p => p.Id == postId);
         if (postToDelete != null)
         {
-         _dbContext.Posts.Remove(postToDelete);
-        _dbContext.SaveChanges();
-        return NoContent();
+            _dbContext.Posts.Remove(postToDelete);
+            _dbContext.SaveChanges();
+            return NoContent();
         }
         return NotFound();
 
