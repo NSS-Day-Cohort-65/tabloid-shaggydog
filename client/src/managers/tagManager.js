@@ -29,6 +29,10 @@ export const postPostTag = (postTag) => {
  });
 };
 
+export const deletePostTag = (id) => {
+    return fetch(`/api/postTag/${id}`, {method: "DELETE"})
+}
+
 export const putTag = (id, tag) => {
     return fetch(`${_apiURL}/${id}`, {
         method: "PUT",
@@ -42,4 +46,6 @@ export const deleteTag = (id) => {
         method: "DELETE"
     });
 };
+
+
 
