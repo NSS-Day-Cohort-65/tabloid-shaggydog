@@ -20,3 +20,27 @@
  display: flex;
  flex-direction: row;
 }
+
+#tagContainer {
+ display: flex;
+ flex-direction: row;
+}
+
+.postFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* .postCommentsPageContainer {
+    display: flex;
+} */
+
+.postPageHeader {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    margin-top: 5px;
+    padding: 15px;
+}
