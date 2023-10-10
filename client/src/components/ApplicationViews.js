@@ -12,6 +12,7 @@ import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
+
     return (
         <Routes>
             <Route path="/">
@@ -31,6 +32,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         </AuthorizedRoute>
                     }
                 />
+   <Route
+     path="/posts/:id"
+     element={
+      <AuthorizedRoute loggedInUser={loggedInUser}>
+       <PostDetails loggedInUser={loggedInUser} />
+      </AuthorizedRoute>
+     }
+    />
                 <Route
                  path="myposts"
                  element={

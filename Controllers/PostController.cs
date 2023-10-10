@@ -24,6 +24,8 @@ public class PostController : ControllerBase
         return Ok(_dbContext.Posts
         .Include(p => p.Category)
         .Include(p => p.UserProfile)
+        .Include(p => p.PostTags)
+        .ThenInclude(pt => pt.Tag)
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
@@ -46,9 +48,10 @@ public class PostController : ControllerBase
         var postToDelete = _dbContext.Posts.SingleOrDefault(p => p.Id == postId);
         if (postToDelete != null)
         {
-            _dbContext.Posts.Remove(postToDelete);
-            _dbContext.SaveChanges();
-            return NoContent();
+
+        _dbContext.Posts.Remove(postToDelete);
+        _dbContext.SaveChanges();
+        return NoContent();
         }
         return NotFound();
 
