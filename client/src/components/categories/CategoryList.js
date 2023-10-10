@@ -57,6 +57,7 @@ export const CategoryList = ({ loggedInUser }) => {
                         <tr>
                             <th>Id #</th>
                             <th>Name</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,10 +99,10 @@ export const CategoryList = ({ loggedInUser }) => {
                             />
                         </FormGroup>
                         <Button
-                            onClick={() => {
-                                handleCreate();
-                            }}>
-                            Submit
+                        onClick={() => {
+                            handleCreate();
+                        }}>
+                            Save
                         </Button>
                     </Form>
                 </ModalBody>

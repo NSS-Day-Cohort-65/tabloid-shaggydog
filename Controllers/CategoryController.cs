@@ -53,7 +53,7 @@ public class CategoryController : ControllerBase
         {
             return NotFound();
         }
-        if (category.Id == id)
+        if (category.Id != id)
         {
             return BadRequest();
         }
