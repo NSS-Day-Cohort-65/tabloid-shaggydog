@@ -10,6 +10,7 @@ import { PostList } from "./posts/PostList";
 import { TagList } from "./tags/TagList";
 import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
+import { PostComments } from "./posts/comments/PostComments";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
 
@@ -24,27 +25,29 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         </AuthorizedRoute>
                     }
                 />
-                <Route
-                    path="/posts"
-                    element={
-                        <AuthorizedRoute loggedInUser={loggedInUser}>
-                            <PostList loggedInUser={loggedInUser} />
-                        </AuthorizedRoute>
-                    }
-                />
-   <Route
-     path="/posts/:id"
-     element={
-      <AuthorizedRoute loggedInUser={loggedInUser}>
-       <PostDetails loggedInUser={loggedInUser} />
-      </AuthorizedRoute>
-     }
-    />
+                <Route path="/posts">
+                    <Route 
+                        index
+                        element={
+                            <AuthorizedRoute loggedInUser={loggedInUser}>
+                                <PostList loggedInUser={loggedInUser} />
+                            </AuthorizedRoute>
+                        }
+                    />
+                    <Route 
+                        path=":id/comments"
+                        element={
+                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                                <PostComments />
+                            </AuthorizedRoute>
+                        }
+                    />
+                </Route>
                 <Route
                     path="/posts/:id"
                     element={
                         <AuthorizedRoute loggedInUser={loggedInUser}>
-                            <PostDetails />
+                            <PostDetails loggedInUser={loggedInUser} />
                         </AuthorizedRoute>
                     }
                 />
@@ -61,7 +64,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         index
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                                <UserProfileList />
+                                <UserProfileList loggedInUser={loggedInUser} roles={["Admin"]} />
                             </AuthorizedRoute>
                         }
                     />
