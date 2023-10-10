@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchPosts } from "../../managers/postManager";
+import { Button } from "reactstrap";
+import ConfirmDeletePostModal from "./ConfirmDeletePostModal";
 
-export const PostList = () => {
+export const PostList = ({ loggedInUser }) => {
  const [posts, setPosts] = useState([]);
 
  async function getData() {
@@ -29,9 +31,13 @@ export const PostList = () => {
      <div key={p.id} className="postContainer">
       <h3>{p.title}</h3>
       <h5>Category: {p.category.name}</h5>
-
       <p>Published: {p.publishDateTime.split("T")[0]}</p>
       <p>Author: {p.userProfile.fullName}</p>
+      {loggedInUser?.roles.includes("Admin") ? (
+       <ConfirmDeletePostModal post={p} getData={getData} />
+      ) : (
+       ""
+      )}
      </div>
     ))}
    </div>

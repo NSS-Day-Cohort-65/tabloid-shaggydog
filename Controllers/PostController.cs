@@ -27,4 +27,19 @@ public class PostController : ControllerBase
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
         .OrderByDescending(p => p.PublishDateTime));
     }
+
+    //delete a post
+    [HttpDelete("{postId}")]
+    public IActionResult DeletePost(int postId)
+    {
+        //find the post to delete.
+        var postToDelete = _dbContext.Posts.SingleOrDefault(p => p.Id == postId);
+        if (postToDelete != null)
+        {
+         _dbContext.Posts.Remove(postToDelete);
+        _dbContext.SaveChanges();
+        return NoContent();
+        }
+        return NotFound();
+    }
 }
