@@ -5,24 +5,59 @@ import { Modal, ModalHeader, Button } from "reactstrap";
 import { ManagePostTagsModal } from "./ManagePostTagsModal";
 
 import { PostTagModalManager } from "./PostTagModalManager";
+import { createSubscription, endSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
 
 export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
+    const [userSubscribed, setUserSubscribed] = useState(false);
+    const [userSubscription, setUserSubscription] = useState();
 
     const toggleTagsModal = () => {
-        setTagsModalOpen(!tagsModalOpen)
+        setTagsModalOpen(!tagsModalOpen);
     }
-
 
     const getPostById = () => {
         fetchSinglePost(parseInt(id)).then(setPost);
     };
-    console.log(loggedInUser);
+
+    const getSubscriptionStatus = () => {
+        fetchUserSubscriptions(loggedInUser.id)
+        .then((res) => {
+            if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
+                setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
+                setUserSubscribed(true);
+            } else {
+                setUserSubscribed(false);
+            }
+        })
+    }
+
+    const handleSubscribe = () => {
+        if (!userSubscribed) {
+            const newSubscription = {
+                subscriberUserProfileId: loggedInUser.id,
+                providerUserProfileId: post.userProfile.id
+            }
+
+            createSubscription(newSubscription)
+                .then(getSubscriptionStatus);
+        } else {
+            endSubscription(userSubscription.id)
+                .then(getSubscriptionStatus);
+        }
+    }
+
     useEffect(() => {
         getPostById();
     }, []);
+
+    useEffect(() => {
+        if (post) {
+            getSubscriptionStatus();
+        }
+    }, [post]);
 
     if (!post) {
         return ``;
@@ -37,7 +72,20 @@ export const PostDetails = ({ loggedInUser }) => {
                 Published: {post.publishDateTime}, Author: {post.userProfile.fullName}
             </p>
 
-            
+            <Button
+            color="link"
+            onClick={() => {
+                handleSubscribe();
+            }}
+            >
+                {
+                    userSubscribed
+                    ?
+                    "Unsubscribe"
+                    :
+                    "Subscribe"
+                }
+            </Button>
             
             {loggedInUser?.id === post?.userProfileId ? (
                 <>

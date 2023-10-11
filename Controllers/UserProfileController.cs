@@ -50,6 +50,30 @@ public class UserProfileController : ControllerBase
         }).OrderBy(up => up.UserName).ToList());
     }
 
+    [HttpGet("deactivated")]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult GetDeactivated()
+    {
+        return Ok(_dbContext.UserProfiles
+        .Include(up => up.IdentityUser)
+        .Select(up => new UserProfile
+        {
+            Id = up.Id,
+            FirstName = up.FirstName,
+            CreateDateTime = up.CreateDateTime,
+            LastName = up.LastName,
+            Email = up.IdentityUser.Email,
+            UserName = up.IdentityUser.UserName,
+            IdentityUserId = up.IdentityUserId,
+            ImageLocation = up.ImageLocation,
+            IsActive = up.IsActive,
+            Roles = _dbContext.UserRoles
+            .Where(ur => ur.UserId == up.IdentityUserId)
+            .Select(ur => _dbContext.Roles.SingleOrDefault(r => r.Id == ur.RoleId).Name)
+            .ToList()
+        }).Where(up => up.IsActive == false).ToList());
+    }
+
     [HttpPost("promote/{id}")]
     [Authorize(Roles = "Admin")]
     public IActionResult Promote(string id)
