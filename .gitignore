@@ -491,3 +491,4 @@ Migrations/TabloidDbContextModelSnapshot.cs
 Migrations/TabloidDbContextModelSnapshot.cs
 Migrations/20231009201004_initialcreate.cs
 Migrations/20231009201004_initialcreate.Designer.cs
+Migrations/20231009184612_InitialCreate.Designer.cs

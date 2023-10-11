@@ -39,8 +39,8 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     <Route 
                         path=":id/comments"
                         element={
-                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                                <PostComments />
+                            <AuthorizedRoute loggedInUser={loggedInUser}>
+                                <PostComments loggedInUser={loggedInUser}/>
                             </AuthorizedRoute>
                         }
                     />
