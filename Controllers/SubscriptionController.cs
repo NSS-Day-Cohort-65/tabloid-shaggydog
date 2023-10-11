@@ -46,12 +46,25 @@ public class SubscriptionController : ControllerBase
     [Authorize]
     public IActionResult CreateSubscription(Subscription subscription)
     {
-        /* subscription.SubscriberUserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == subscription.SubscriberUserProfileId);
-        subscription.ProviderUserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == subscription.ProviderUserProfileId); */
         subscription.BeginDateTime = DateTime.Now;
         
         _dbContext.Subscriptions.Add(subscription);
         _dbContext.SaveChanges();
         return Created($"api/subscriptions/{subscription.Id}", subscription);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public IActionResult EndSubscription(int id)
+    {
+        Subscription subscription = _dbContext.Subscriptions.SingleOrDefault(s => s.Id == id);
+        if (subscription != null)
+        {
+            subscription.EndDateTime = DateTime.Now;
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+
+        return NotFound();
     }
 }

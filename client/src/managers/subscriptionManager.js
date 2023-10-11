@@ -16,6 +16,8 @@ export const createSubscription = (subscription) => {
     });
 };
 
-export const deleteSubscription = (id) => {
-
+export const endSubscription = (id) => {
+    return fetch(`${_apiURL}/${id}`, {
+        method: "PUT"
+    });
 };

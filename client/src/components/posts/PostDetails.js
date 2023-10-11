@@ -5,13 +5,14 @@ import { Modal, ModalHeader, Button } from "reactstrap";
 import { ManagePostTagsModal } from "./ManagePostTagsModal";
 
 import { PostTagModalManager } from "./PostTagModalManager";
-import { createSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
+import { createSubscription, endSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
 
 export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
     const [userSubscribed, setUserSubscribed] = useState(false);
+    const [userSubscription, setUserSubscription] = useState();
 
     const toggleTagsModal = () => {
         setTagsModalOpen(!tagsModalOpen);
@@ -21,6 +22,18 @@ export const PostDetails = ({ loggedInUser }) => {
         fetchSinglePost(parseInt(id)).then(setPost);
     };
 
+    const getSubscriptionStatus = () => {
+        fetchUserSubscriptions(loggedInUser.id)
+        .then((res) => {
+            if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
+                setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
+                setUserSubscribed(true);
+            } else {
+                setUserSubscribed(false);
+            }
+        })
+    }
+
     const handleSubscribe = () => {
         if (!userSubscribed) {
             const newSubscription = {
@@ -28,9 +41,11 @@ export const PostDetails = ({ loggedInUser }) => {
                 providerUserProfileId: post.userProfile.id
             }
 
-            createSubscription(newSubscription);
+            createSubscription(newSubscription)
+                .then(getSubscriptionStatus);
         } else {
-
+            endSubscription(userSubscription.id)
+                .then(getSubscriptionStatus);
         }
     }
 
@@ -40,12 +55,7 @@ export const PostDetails = ({ loggedInUser }) => {
 
     useEffect(() => {
         if (post) {
-            fetchUserSubscriptions(loggedInUser.id)
-            .then((res) => {
-                if (post && res.find(s => s.providerUserProfileId === post.userProfileId)) {
-                    setUserSubscribed(true);
-                }
-            })
+            getSubscriptionStatus();
         }
     }, [post]);
 
