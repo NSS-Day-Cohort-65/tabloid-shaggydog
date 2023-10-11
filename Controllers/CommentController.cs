@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tabloid.Data;
@@ -78,8 +79,9 @@ public class CommentController : ControllerBase
         }
         return NotFound();
     }
+
     [HttpPost]
-    // [Authorize]
+    [Authorize]
     public IActionResult CreateComment(Comment comment)
     {
         try
@@ -97,7 +99,6 @@ public class CommentController : ControllerBase
             return BadRequest();
         }
     }
-
 
     //put to a comment
     [HttpPut("{commentId}")]
@@ -117,5 +118,4 @@ public class CommentController : ControllerBase
         // if null return not found
         return NotFound();
     }
-
 }
