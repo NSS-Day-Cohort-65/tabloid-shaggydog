@@ -13,6 +13,7 @@ import { PostDetails } from "./posts/PostDetails";
 import { CreatePost } from "./posts/CreatePost";
 import { PostComments } from "./posts/comments/PostComments";
 import UserProfilesShowDeactivated from "./userprofiles/UserProfilesShowDeactivated";
+import { NotApprovedPosts } from "./posts/NotApprovedPosts.js"
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -68,14 +69,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         </AuthorizedRoute>
                     }
                 />
- <Route
-     path="/unapprovedPosts"
-     element={
-      <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-       <NotApprovedPosts />
-      </AuthorizedRoute>
-     }
-    />
+                <Route
+                    path="/unapprovedPosts"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                            <NotApprovedPosts />
+                        </AuthorizedRoute>
+                    }
+                />
                 <Route path="/userprofiles">
                     <Route
                         index
