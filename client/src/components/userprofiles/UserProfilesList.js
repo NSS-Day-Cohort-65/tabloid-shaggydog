@@ -22,6 +22,7 @@ export default function UserProfileList() {
               <th>Display Name</th>
               <th>Admin?</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -32,6 +33,7 @@ export default function UserProfileList() {
                 <td>{up.userName}</td>
                 <td>{up.roles}</td>
                 <td> <Link to={`/userprofiles/${up.id}`}>Details</Link></td>
+                <td> <Link to={`/userprofiles/edit/${up.id}`}>Edit</Link></td>
               </tr>
             ))}
           </tbody>

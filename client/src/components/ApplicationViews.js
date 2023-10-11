@@ -12,6 +12,7 @@ import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
 import { CreatePost } from "./posts/CreatePost";
 import { PostComments } from "./posts/comments/PostComments";
+import { UserProfileEdit } from "./userprofiles/UserProfileEdit";
 
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
@@ -87,6 +88,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         }
                     />
                 </Route>
+                <Route
+                        path='/userprofiles/edit/:id'
+                        element={
+                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                                <UserProfileEdit />
+                            </AuthorizedRoute>
+                        }
+                />
                 <Route path="/categories">
                     <Route
                         index
