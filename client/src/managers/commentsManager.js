@@ -19,10 +19,17 @@ export const deleteComment = (comment) => {
 };
 
 export const postComment = (comment) => {
-    return fetch(_apiURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(comment),
-    });
+ return fetch(_apiURL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(comment),
+ });
 };
 
+export const editComment = (id, newCommentInformation) => {
+ return fetch(`${_apiURL}/${id}`, {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(newCommentInformation),
+ });
+};

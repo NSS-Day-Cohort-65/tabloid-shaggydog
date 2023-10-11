@@ -5,6 +5,7 @@ import { fetchCommentsByPost } from "../../../managers/commentsManager";
 import { Button, Card, CardBody, Collapse } from "reactstrap";
 import { NewComment } from "./NewComment";
 import ConfirmDeleteCommentModal from "./confirmDeleteCommentModal";
+import EditCommentModal from "./EditCommentModal";
 
 export const PostComments = ({ loggedInUser }) => {
  const [post, setPost] = useState();
@@ -46,10 +47,13 @@ export const PostComments = ({ loggedInUser }) => {
       <p>
        <b>Posted on {c.createDateTime.split("T")[0]}</b>
        {loggedInUser.id == c.userProfileId ? (
-        <ConfirmDeleteCommentModal
-         getAllComments={getAllComments}
-         comment={c}
-        />
+        <>
+         <ConfirmDeleteCommentModal
+          getAllComments={getAllComments}
+          comment={c}
+         />
+         <EditCommentModal comment={c} getAllComments={getAllComments} />
+        </>
        ) : (
         ""
        )}
