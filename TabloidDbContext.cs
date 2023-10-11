@@ -10,14 +10,14 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
     private readonly IConfiguration _configuration;
 
     public DbSet<UserProfile> UserProfiles { get; set; }
-    public DbSet<Category> Categories {get;set;}
-    public DbSet<Post> Posts {get;set;}
-    public DbSet<Reaction> Reactions {get;set;}
-    public DbSet<PostReaction> PostReactions {get;set;}
-    public DbSet<Tag> Tags {get;set;}
-    public DbSet<PostTag> PostTags {get;set;}
-    public DbSet<Comment> Comments {get;set;}
-    public DbSet<Subscription> Subscriptions {get;set;}  
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Post> Posts { get; set; }
+    public DbSet<Reaction> Reactions { get; set; }
+    public DbSet<PostReaction> PostReactions { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<PostTag> PostTags { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
 
     public TabloidDbContext(DbContextOptions<TabloidDbContext> context, IConfiguration config) : base(context)
     {
@@ -110,7 +110,8 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 FirstName = "Admina",
                 LastName = "Strator",
                 ImageLocation = "https://robohash.org/numquamutut.png?size=150x150&set=set1",
-                CreateDateTime = new DateTime(2022, 1, 25)
+                CreateDateTime = new DateTime(2022, 1, 25),
+                IsActive = true
             },
              new UserProfile
             {
@@ -120,6 +121,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 CreateDateTime = new DateTime(2023, 2, 2),
                 ImageLocation = "https://robohash.org/nisiautemet.png?size=150x150&set=set1",
                 IdentityUserId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
+                IsActive = true
             },
             new UserProfile
             {
@@ -129,6 +131,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 CreateDateTime = new DateTime(2022, 3, 15),
                 ImageLocation = "https://robohash.org/molestiaemagnamet.png?size=150x150&set=set1",
                 IdentityUserId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
+                IsActive = true
             },
             new UserProfile
             {
@@ -138,6 +141,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 CreateDateTime = new DateTime(2023, 6, 10),
                 ImageLocation = "https://robohash.org/deseruntutipsum.png?size=150x150&set=set1",
                 IdentityUserId = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
+                IsActive = true
             },
             new UserProfile
             {
@@ -147,6 +151,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 CreateDateTime = new DateTime(2023, 5, 15),
                 ImageLocation = "https://robohash.org/quiundedignissimos.png?size=150x150&set=set1",
                 IdentityUserId = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
+                IsActive = true
             },
             new UserProfile
             {
@@ -156,19 +161,20 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
                 CreateDateTime = new DateTime(2022, 10, 18),
                 ImageLocation = "https://robohash.org/hicnihilipsa.png?size=150x150&set=set1",
                 IdentityUserId = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
+                IsActive = true
             }
         });
 
-        modelBuilder.Entity<Category>().HasData(new Category []
+        modelBuilder.Entity<Category>().HasData(new Category[]
         {
-            new Category {Id = 1, Name = "Science"}, 
-            new Category {Id = 2, Name = "Comedy"}, 
+            new Category {Id = 1, Name = "Science"},
+            new Category {Id = 2, Name = "Comedy"},
             new Category {Id = 3, Name = "Food"},
-            new Category {Id = 4, Name = "Community"}, 
+            new Category {Id = 4, Name = "Community"},
             new Category {Id = 5, Name = "Technology"}
         });
 
-        modelBuilder.Entity<Reaction>().HasData(new Reaction []
+        modelBuilder.Entity<Reaction>().HasData(new Reaction[]
         {
             new Reaction {Id = 1, Name = "Like", ImageLocation = "https://www.svgrepo.com/show/449925/thumbs-up.svg" },
             new Reaction {Id = 2, Name = "Dislike", ImageLocation ="https://www.svgrepo.com/show/449926/thumbs-down.svg"},
@@ -179,7 +185,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             new Reaction {Id = 7, Name = "Wow", ImageLocation ="https://www.svgrepo.com/show/303213/facebook-wow-logo.svg"}
         });
 
-        modelBuilder.Entity<Tag>().HasData(new Tag []
+        modelBuilder.Entity<Tag>().HasData(new Tag[]
         {
             new Tag {Id = 1, Name = "#Spicy"},
             new Tag {Id = 2, Name = "#Hipster"},
@@ -211,32 +217,32 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Comment>().HasData(new Comment[]
         {
             new Comment {
-                Id = 1, 
-                PostId = 1, 
+                Id = 1,
+                PostId = 1,
                 UserProfileId = 1,
-                Subject = "Coffee", 
-                Content = "I love Mocha", 
+                Subject = "Coffee",
+                Content = "I love Mocha",
                 CreateDateTime = new DateTime(2023,10,9,11,41,0)},
             new Comment {
-                Id = 2, 
-                PostId = 2, 
+                Id = 2,
+                PostId = 2,
                 UserProfileId = 3,
-                Subject = "Zest", 
-                Content = "Keepin it Zesty", 
+                Subject = "Zest",
+                Content = "Keepin it Zesty",
                 CreateDateTime = new DateTime(2023,10,9,11,30,0)},
              new Comment {
-                Id = 3, 
-                PostId = 3, 
+                Id = 3,
+                PostId = 3,
                 UserProfileId = 2,
-                Subject = "DOGGY!", 
-                Content = "Did dog go poo poo?", 
+                Subject = "DOGGY!",
+                Content = "Did dog go poo poo?",
                 CreateDateTime = new DateTime(2023,10,9,11,24,0)},
             new Comment {
-                Id = 4, 
-                PostId = 4, 
+                Id = 4,
+                PostId = 4,
                 UserProfileId = 2,
-                Subject = "OOGA BOOGA", 
-                Content = "MONKEY MONKEY RAN", 
+                Subject = "OOGA BOOGA",
+                Content = "MONKEY MONKEY RAN",
                 CreateDateTime = new DateTime(2023,10,9,11,5,0)},
         });
 
@@ -245,7 +251,7 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             new Subscription { Id = 1, SubscriberUserProfileId = 1, ProviderUserProfileId =2, BeginDateTime = new DateTime(2023,10,7)},
             new Subscription { Id = 2, SubscriberUserProfileId = 2, ProviderUserProfileId =1, BeginDateTime = new DateTime(2023,10,7)},
             new Subscription { Id = 3, SubscriberUserProfileId = 3, ProviderUserProfileId =4, BeginDateTime = new DateTime(2023,10,7)},
-            new Subscription { Id = 4, SubscriberUserProfileId = 4, ProviderUserProfileId =1, BeginDateTime = new DateTime(2023,10,7)} 
+            new Subscription { Id = 4, SubscriberUserProfileId = 4, ProviderUserProfileId =1, BeginDateTime = new DateTime(2023,10,7)}
         });
 
         modelBuilder.Entity<PostTag>().HasData(new PostTag[]
@@ -259,14 +265,14 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             new PostTag { Id =7, PostId =3, TagId =4},
         });
 
-        modelBuilder.Entity<Post>().HasData(new Post []
+        modelBuilder.Entity<Post>().HasData(new Post[]
         {
             new Post {
-            Id = 1, 
-            Title = "Pumpkin Spice Season!", 
-            Content ="OMG, it's officially pumpkin spice latte season, babes! 🎃☕️ Fall vibes are in the air, and I couldn't be more pumped! Grab your coziest sweater, slip on those knee-high boots, and let's embrace the basic life together! 💁‍♀️🍂 Pumpkin spice and everything nice, amirite? 🧡 #PSL #FallVibes #BasicAndProud", 
-            ImageLocation = "https://chocolatecoveredkatie.com/wp-content/uploads/2023/08/Pumpkin-Spice-Latte-Recipe-jpg.webp", 
-            CreateDateTime = new DateTime(2023, 01, 01), 
+            Id = 1,
+            Title = "Pumpkin Spice Season!",
+            Content ="OMG, it's officially pumpkin spice latte season, babes! 🎃☕️ Fall vibes are in the air, and I couldn't be more pumped! Grab your coziest sweater, slip on those knee-high boots, and let's embrace the basic life together! 💁‍♀️🍂 Pumpkin spice and everything nice, amirite? 🧡 #PSL #FallVibes #BasicAndProud",
+            ImageLocation = "https://chocolatecoveredkatie.com/wp-content/uploads/2023/08/Pumpkin-Spice-Latte-Recipe-jpg.webp",
+            CreateDateTime = new DateTime(2023, 01, 01),
             PublishDateTime = new DateTime(2023, 01, 02),
             IsApproved = true,
             CategoryId = 1,
@@ -274,20 +280,20 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             },
 
             new Post {
-            Id = 2, 
-            Title = "Meet My Furry BFF: Mr. Fluffykins the Golden Doodle! 🐾💕", 
-            Content ="Just welcomed the newest member of the fam into my life, and I'm OBSESSED! Meet Mr. Fluffykins, my adorable golden doodle puppy! 🐶💕 He's basically a teddy bear come to life, and I can't handle the cuteness. Get ready for all the puppy spam, folks! 📸✨ #GoldenDoodleLove #PuppyParent #FurBaby", ImageLocation = "https://www.happygodoodle.com/wp-content/uploads/2022/07/apricot-goldendoodle-cuddled-in-womans-arms-puppy-socialization-good-breeder-dp.jpg", 
+            Id = 2,
+            Title = "Meet My Furry BFF: Mr. Fluffykins the Golden Doodle! 🐾💕",
+            Content ="Just welcomed the newest member of the fam into my life, and I'm OBSESSED! Meet Mr. Fluffykins, my adorable golden doodle puppy! 🐶💕 He's basically a teddy bear come to life, and I can't handle the cuteness. Get ready for all the puppy spam, folks! 📸✨ #GoldenDoodleLove #PuppyParent #FurBaby", ImageLocation = "https://www.happygodoodle.com/wp-content/uploads/2022/07/apricot-goldendoodle-cuddled-in-womans-arms-puppy-socialization-good-breeder-dp.jpg",
             CreateDateTime = new DateTime(2023, 01, 03), PublishDateTime = new DateTime(2023, 01, 04),
             IsApproved = true,
             CategoryId = 2,
             UserProfileId =2,
             },
-            
+
             new Post {
-            Id = 3, 
-            Title = "Sunny Sunday Paw-ty at the Dog Park! 🌞🐾", 
-            Content ="Sunday Funday with my fur baby! 🌞🐶 Took Mr. Fluffykins to the dog park, and he's making new friends left and right. 🐾❤️ What's your favorite way to spend a sunny Sunday? #DogParkAdventures #PuppyLove #FurryFriends", 
-            ImageLocation ="https://www.puppies.co.uk/media/announcement_categories/2021/1/goldendoodle-4110__w780_h780_c.jpg", 
+            Id = 3,
+            Title = "Sunny Sunday Paw-ty at the Dog Park! 🌞🐾",
+            Content ="Sunday Funday with my fur baby! 🌞🐶 Took Mr. Fluffykins to the dog park, and he's making new friends left and right. 🐾❤️ What's your favorite way to spend a sunny Sunday? #DogParkAdventures #PuppyLove #FurryFriends",
+            ImageLocation ="https://www.puppies.co.uk/media/announcement_categories/2021/1/goldendoodle-4110__w780_h780_c.jpg",
             CreateDateTime = new DateTime(2023, 01, 05), PublishDateTime = new DateTime(2023, 01, 06),
             IsApproved = true,
             CategoryId = 3,
@@ -295,10 +301,10 @@ public class TabloidDbContext : IdentityDbContext<IdentityUser>
             },
 
             new Post {
-            Id = 4, 
-            Title = "Chasing Dreams at the Grand Canyon: A Memory Worth Every Step! 🌄✨", 
-            Content ="Just crossed off a major bucket list item – the Grand Canyon! 😍🏜️ Standing on the edge of this natural wonder left me absolutely speechless. Mother Nature, you're a true artist! 🎨✨ Hiking, breathtaking views, and unforgettable memories - this trip had it all! Who else has experienced the awe of the Grand Canyon? Share your favorite moments! 🌄❤️ #GrandCanyonAdventure #BucketListChecked #NatureLover", 
-            ImageLocation ="https://cdn.outsideonline.com/wp-content/uploads/2022/08/grand-canyon-square.jpg", 
+            Id = 4,
+            Title = "Chasing Dreams at the Grand Canyon: A Memory Worth Every Step! 🌄✨",
+            Content ="Just crossed off a major bucket list item – the Grand Canyon! 😍🏜️ Standing on the edge of this natural wonder left me absolutely speechless. Mother Nature, you're a true artist! 🎨✨ Hiking, breathtaking views, and unforgettable memories - this trip had it all! Who else has experienced the awe of the Grand Canyon? Share your favorite moments! 🌄❤️ #GrandCanyonAdventure #BucketListChecked #NatureLover",
+            ImageLocation ="https://cdn.outsideonline.com/wp-content/uploads/2022/08/grand-canyon-square.jpg",
             CreateDateTime = new DateTime(2023, 01, 07), PublishDateTime = new DateTime(2023, 01, 08),
             IsApproved = true,
             CategoryId = 4,

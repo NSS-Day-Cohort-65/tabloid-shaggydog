@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
-import { getProfiles } from "../../managers/userProfileManager";
-import { Link } from "react-router-dom";
-import { Table } from "reactstrap";
-export default function UserProfileList() {
+import { activateProfile, deactivateProfile, getProfiles } from "../../managers/userProfileManager";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Table } from "reactstrap";
+import { UserProfileDeactivation } from "./UserProfileDeactivation";
+
+export default function UserProfileList({ loggedInUser }) {
   const [userprofiles, setUserProfiles] = useState([]);
+
   const getUserProfiles = () => {
     getProfiles().then(setUserProfiles);
   };
+
   useEffect(() => {
     getUserProfiles();
   }, []);
+
+  // const handleActivate = (e) => {
+  //   e.preventDefault()
+  //   activateProfile(e.target.value)
+  //   getUserProfiles()
+  // }
+
   return (
     <div className="container">
       <div className="sub-menu bg-light">
@@ -21,6 +32,7 @@ export default function UserProfileList() {
               <th>Full Name</th>
               <th>Display Name</th>
               <th>Admin?</th>
+              <th>Active?</th>
               <th></th>
             </tr>
           </thead>
@@ -31,6 +43,23 @@ export default function UserProfileList() {
                 <td>{up.fullName}</td>
                 <td>{up.userName}</td>
                 <td>{up.roles}</td>
+                <td>{up.isActive.toString()}</td>
+                {up.isActive ? (
+                  <td>
+                    {loggedInUser?.roles.includes("Admin") ? (
+                      <UserProfileDeactivation userProfile={up} getUserProfiles={getUserProfiles} />
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                ) : (
+                  <Button
+                    color="secondary"
+                    value={up.id}
+                  // onClick={handleActivate}
+                  >Activate</Button>
+                )}
+
                 <td> <Link to={`/userprofiles/${up.id}`}>Details</Link></td>
               </tr>
             ))}
