@@ -5,24 +5,49 @@ import { Modal, ModalHeader, Button } from "reactstrap";
 import { ManagePostTagsModal } from "./ManagePostTagsModal";
 
 import { PostTagModalManager } from "./PostTagModalManager";
+import { createSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
 
 export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
+    const [userSubscribed, setUserSubscribed] = useState(false);
 
     const toggleTagsModal = () => {
-        setTagsModalOpen(!tagsModalOpen)
+        setTagsModalOpen(!tagsModalOpen);
     }
-
 
     const getPostById = () => {
         fetchSinglePost(parseInt(id)).then(setPost);
     };
-    console.log(loggedInUser);
+
+    const handleSubscribe = () => {
+        if (!userSubscribed) {
+            const newSubscription = {
+                subscriberUserProfileId: loggedInUser.id,
+                providerUserProfileId: post.userProfile.id
+            }
+
+            createSubscription(newSubscription);
+        } else {
+
+        }
+    }
+
     useEffect(() => {
         getPostById();
     }, []);
+
+    useEffect(() => {
+        if (post) {
+            fetchUserSubscriptions(loggedInUser.id)
+            .then((res) => {
+                if (post && res.find(s => s.providerUserProfileId === post.userProfileId)) {
+                    setUserSubscribed(true);
+                }
+            })
+        }
+    }, [post]);
 
     if (!post) {
         return ``;
@@ -37,7 +62,20 @@ export const PostDetails = ({ loggedInUser }) => {
                 Published: {post.publishDateTime}, Author: {post.userProfile.fullName}
             </p>
 
-            
+            <Button
+            color="link"
+            onClick={() => {
+                handleSubscribe();
+            }}
+            >
+                {
+                    userSubscribed
+                    ?
+                    "Unsubscribe"
+                    :
+                    "Subscribe"
+                }
+            </Button>
             
             {loggedInUser?.id === post?.userProfileId ? (
                 <>
