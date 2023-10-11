@@ -12,6 +12,7 @@ import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
 import { CreatePost } from "./posts/CreatePost";
 import { PostComments } from "./posts/comments/PostComments";
+import UserProfilesShowDeactivated from "./userprofiles/UserProfilesShowDeactivated";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -26,7 +27,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     }
                 />
                 <Route path="/posts">
-                    <Route 
+                    <Route
                         index
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser}>
@@ -34,11 +35,11 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                             </AuthorizedRoute>
                         }
                     />
-                    <Route 
+                    <Route
                         path=":id/comments"
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser}>
-                                <PostComments loggedInUser={loggedInUser}/>
+                                <PostComments loggedInUser={loggedInUser} />
                             </AuthorizedRoute>
                         }
                     />
@@ -52,20 +53,20 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     }
                 />
                 <Route
-                 path="myposts"
-                 element={
-                  <AuthorizedRoute loggedInUser={loggedInUser}>
-                   <MyPosts loggedInUser={loggedInUser}/>
-                  </AuthorizedRoute>
-                 }
+                    path="myposts"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <MyPosts loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
                 />
                 <Route
-                 path="createpost"
-                 element={
-                  <AuthorizedRoute loggedInUser={loggedInUser}>
-                   <CreatePost loggedInUser={loggedInUser}/>
-                  </AuthorizedRoute>
-                 }
+                    path="createpost"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <CreatePost loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
                 />
                 <Route path="/userprofiles">
                     <Route
@@ -73,6 +74,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
                                 <UserProfileList loggedInUser={loggedInUser} roles={["Admin"]} />
+                            </AuthorizedRoute>
+                        }
+                    />
+                    <Route
+                        path="deactivated"
+                        element={
+                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                                <UserProfilesShowDeactivated />
                             </AuthorizedRoute>
                         }
                     />
