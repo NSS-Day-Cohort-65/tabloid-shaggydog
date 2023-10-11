@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
-import { fetchPosts, unApprovePost } from "../../managers/postManager";
+import {
+ approvePost,
+ fetchPosts,
+ fetchUnapprovedPosts,
+} from "../../managers/postManager";
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 import ConfirmDeletePostModal from "./ConfirmDeletePostModal";
 import { PostTagModalManager } from "./PostTagModalManager";
 import { ReactComponent as CommentsIcon } from "../../svg/commentsIcon.svg";
 
-export const PostList = ({ loggedInUser }) => {
+export const NotApprovedPosts = ({ loggedInUser }) => {
  const [posts, setPosts] = useState();
  const navigate = useNavigate();
 
  /*  console.log(loggedInUser); */
  async function getData() {
-  fetchPosts().then(setPosts);
+  fetchUnapprovedPosts().then(setPosts);
  }
 
  useEffect(() => {
   getData();
  }, []);
+
+ useEffect(() => {
+  console.log(posts);
+  // setPosts(posts.filter((p) => p.isApproved === true));
+ }, [posts]);
 
  if (!posts) return;
 
@@ -25,11 +34,12 @@ export const PostList = ({ loggedInUser }) => {
   return "";
  }
 
- const handleUnApproveButton = (id) => {
-  unApprovePost(id).then(() => {
+ const handleApproveButton = (id) => {
+  approvePost(id).then(() => {
    getData();
   });
  };
+
  return (
   <>
    <h1>Post List</h1>
@@ -58,33 +68,15 @@ export const PostList = ({ loggedInUser }) => {
        </div>
       </p>
       <div className="postFooter">
-       <div>
-        <CommentsIcon />
-        <Button
-         color="info"
-         onClick={() => {
-          navigate(`/posts/${p.id}/comments`);
-         }}
-        >
-         View Comments
-        </Button>
-       </div>
-       {loggedInUser?.roles.includes("Admin") ? (
-        <>
-         <ConfirmDeletePostModal post={p} getData={getData} />
-
-         <Button
-          color="danger"
-          onClick={() => {
-           handleUnApproveButton(p.id);
-          }}
-         >
-          UnApprove
-         </Button>
-        </>
-       ) : (
-        ""
-       )}
+       <div></div>
+       <Button
+        color="primary"
+        onClick={() => {
+         handleApproveButton(p.id);
+        }}
+       >
+        Approve Post
+       </Button>
       </div>
      </div>
     ))}

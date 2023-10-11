@@ -4,9 +4,13 @@ export const fetchPosts = () => {
  return fetch(_apiURL).then((res) => res.json());
 };
 
+export const fetchUnapprovedPosts = () => {
+ return fetch(`${_apiURL}/unapproved`).then((res) => res.json());
+};
+
 export const fetchSinglePost = (id) => {
-    return fetch(`${_apiURL}/${id}`).then((res) => res.json());
-}
+ return fetch(`${_apiURL}/${id}`).then((res) => res.json());
+};
 
 //delete post
 export const deletePost = (post) => {
@@ -17,12 +21,24 @@ export const deletePost = (post) => {
 
 //create a post
 export const createPost = (post) => {
-    return fetch(`${_apiURL}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(post)
-    }).then((res) => res.json()
-    )
-}
+ return fetch(`${_apiURL}`, {
+  method: "POST",
+  headers: {
+   "Content-Type": "application/json",
+  },
+  body: JSON.stringify(post),
+ }).then((res) => res.json());
+};
+
+//approve post
+export const approvePost = (id) => {
+ return fetch(`${_apiURL}/approve/${id}`, {
+  method: "PUT",
+ });
+};
+
+export const unApprovePost = (id) => {
+ return fetch(`${_apiURL}/unapprove/${id}`, {
+  method: "PUT",
+ });
+};

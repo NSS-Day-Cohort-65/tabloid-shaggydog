@@ -30,6 +30,19 @@ public class PostController : ControllerBase
         .OrderByDescending(p => p.PublishDateTime));
     }
 
+    [HttpGet("unapproved")]
+    //[Authorize]
+    public IActionResult GetUnapproved()
+    {
+        return Ok(_dbContext.Posts
+        .Include(p => p.Category)
+        .Include(p => p.UserProfile)
+        .Include(p => p.PostTags)
+        .ThenInclude(pt => pt.Tag)
+        .Where(p => p.PublishDateTime != null && p.IsApproved == false)
+        .OrderByDescending(p => p.PublishDateTime));
+    }
+
     [HttpGet("{id}")]
     //[Authorize]
     public IActionResult GetById(int id)
@@ -71,5 +84,35 @@ public class PostController : ControllerBase
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
         return Created($"api/post/{post.Id}", post);
+    }
+
+    //approve a post
+    [HttpPut("approve/{id}")]
+    public IActionResult approvePost(int id)
+    {
+        //find the post to approve from the id
+        Post postToApprove = _dbContext.Posts.SingleOrDefault((p) => p.Id == id);
+        if (postToApprove != null)
+        {
+            postToApprove.IsApproved = true;
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return NotFound();
+    }
+
+    //unapprove a post
+     [HttpPut("unapprove/{id}")]
+    public IActionResult unApprovePost(int id)
+    {
+        //find the post to approve from the id
+        Post postToUnApprove = _dbContext.Posts.SingleOrDefault((p) => p.Id == id);
+        if (postToUnApprove != null)
+        {
+            postToUnApprove.IsApproved = false;
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return NotFound();
     }
 }
