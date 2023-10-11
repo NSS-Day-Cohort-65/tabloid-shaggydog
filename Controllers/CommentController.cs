@@ -63,4 +63,38 @@ public class CommentController : ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpDelete("{commentId}")]
+    //[Authorize]
+    public IActionResult Delete(int commentId)
+    {
+        //find comment to delete
+        Comment CommentToDelete = _dbContext.Comments.FirstOrDefault(c => c.Id == commentId);
+        if(CommentToDelete != null)
+        {
+            _dbContext.Comments.Remove(CommentToDelete);
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return NotFound();
+
+    [HttpPost]
+    // [Authorize]
+    public IActionResult CreateComment(Comment comment)
+    {
+        try
+        {
+            comment.Post = _dbContext.Posts.SingleOrDefault(p => p.Id == comment.PostId);
+            comment.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == comment.UserProfileId);
+            comment.CreateDateTime = DateTime.Now;
+
+            _dbContext.Comments.Add(comment);
+            _dbContext.SaveChanges();
+            return Created($"api/comment/{comment.Id}", comment);
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
+    }
 }

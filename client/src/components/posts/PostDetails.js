@@ -37,16 +37,20 @@ export const PostDetails = ({ loggedInUser }) => {
                 Published: {post.publishDateTime}, Author: {post.userProfile.fullName}
             </p>
 
-            <Button
-                onClick={() => { toggleTagsModal() }}>
-                Manage Tags
-            </Button>
-            <Modal isOpen={tagsModalOpen} toggle={toggleTagsModal}>
-                <ModalHeader toggle={toggleTagsModal}>Manage Tags</ModalHeader>
-                <ManagePostTagsModal toggle={toggleTagsModal} post={post} setPost={setPost} getPostById={getPostById} />
-            </Modal>
+            
+            
             {loggedInUser?.id === post?.userProfileId ? (
-                <PostTagModalManager post={post} />
+                <>
+                    <Button
+                        onClick={() => { toggleTagsModal() }}>
+                        Manage Tags
+                    </Button>
+                    <Modal isOpen={tagsModalOpen} toggle={toggleTagsModal}>
+                        <ModalHeader toggle={toggleTagsModal}>Manage Tags</ModalHeader>
+                        <ManagePostTagsModal toggle={toggleTagsModal} post={post} setPost={setPost} getPostById={getPostById} />
+                    </Modal>
+                    <PostTagModalManager post={post} />
+                </>
             ) : (
                 ""
             )}
