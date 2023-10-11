@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { fetchSinglePost } from "../../../managers/postManager";
 import { fetchCommentsByPost } from "../../../managers/commentsManager";
 import { Button, Card, CardBody, Collapse } from "reactstrap";
 import { NewComment } from "./NewComment";
+
 
 export const PostComments = ({loggedInUser}) => {
     const [post, setPost] = useState();
@@ -11,19 +12,16 @@ export const PostComments = ({loggedInUser}) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
-    const { id } = useParams();
 
+ const { id } = useParams();
 
-    const getAllComments = () => {
-        fetchCommentsByPost(id).then(setComments);
-    }
+ const getAllComments = () => {
+  fetchCommentsByPost(id).then(setComments);
+ };
 
-    useEffect(
-        () => {
-            fetchSinglePost(id).then(setPost).then(getAllComments);
-        },
-        []
-    )
+ useEffect(() => {
+  fetchSinglePost(id).then(setPost).then(getAllComments);
+ }, []);
 
     if (!post || !comments) return;
 
@@ -57,3 +55,4 @@ export const PostComments = ({loggedInUser}) => {
         </div>
     )
 }
+

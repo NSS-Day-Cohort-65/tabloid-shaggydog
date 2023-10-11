@@ -13,9 +13,7 @@ import { PostDetails } from "./posts/PostDetails";
 import { CreatePost } from "./posts/CreatePost";
 import { PostComments } from "./posts/comments/PostComments";
 
-
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
-
     return (
         <Routes>
             <Route path="/">
@@ -23,7 +21,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     index
                     element={
                         <AuthorizedRoute loggedInUser={loggedInUser}>
-                            <PostList />
+                            <PostList loggedInUser={loggedInUser} />
                         </AuthorizedRoute>
                     }
                 />

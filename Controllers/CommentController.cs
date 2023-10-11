@@ -64,6 +64,20 @@ public class CommentController : ControllerBase
         }
     }
 
+    [HttpDelete("{commentId}")]
+    //[Authorize]
+    public IActionResult Delete(int commentId)
+    {
+        //find comment to delete
+        Comment CommentToDelete = _dbContext.Comments.FirstOrDefault(c => c.Id == commentId);
+        if(CommentToDelete != null)
+        {
+            _dbContext.Comments.Remove(CommentToDelete);
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return NotFound();
+
     [HttpPost]
     // [Authorize]
     public IActionResult CreateComment(Comment comment)
