@@ -97,4 +97,25 @@ public class CommentController : ControllerBase
             return BadRequest();
         }
     }
+
+
+    //put to a comment
+    [HttpPut("{commentId}")]
+    public IActionResult editComment(int commentId, Comment updatedComment)
+    {
+        //find the comment to update.
+        var commentToChange = _dbContext.Comments.SingleOrDefault(c => c.Id == commentId);
+
+        if (commentToChange != null)
+        // if not null then update
+        {
+            commentToChange.Content = updatedComment.Content;
+            commentToChange.Subject = updatedComment.Subject;
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        // if null return not found
+        return NotFound();
+    }
+
 }
