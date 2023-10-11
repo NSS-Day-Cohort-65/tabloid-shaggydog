@@ -17,3 +17,12 @@ export const deleteComment = (comment) => {
   method: "DELETE",
  });
 };
+
+export const postComment = (comment) => {
+    return fetch(_apiURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(comment),
+    });
+};
+

@@ -78,5 +78,23 @@ public class CommentController : ControllerBase
         }
         return NotFound();
 
+    [HttpPost]
+    // [Authorize]
+    public IActionResult CreateComment(Comment comment)
+    {
+        try
+        {
+            comment.Post = _dbContext.Posts.SingleOrDefault(p => p.Id == comment.PostId);
+            comment.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == comment.UserProfileId);
+            comment.CreateDateTime = DateTime.Now;
+
+            _dbContext.Comments.Add(comment);
+            _dbContext.SaveChanges();
+            return Created($"api/comment/{comment.Id}", comment);
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
     }
 }
