@@ -68,6 +68,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                         </AuthorizedRoute>
                     }
                 />
+ <Route
+     path="/unapprovedPosts"
+     element={
+      <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+       <NotApprovedPosts />
+      </AuthorizedRoute>
+     }
+    />
                 <Route path="/userprofiles">
                     <Route
                         index
