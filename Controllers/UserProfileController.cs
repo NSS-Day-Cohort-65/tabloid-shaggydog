@@ -155,8 +155,9 @@ public class UserProfileController : ControllerBase
         matching.LastName = userProfile.LastName;
         matching.Email = userProfile.Email;
         matching.UserName = userProfile.UserName;
-        
+        return NoContent();   
     }
+    
     [Authorize(Roles = "Admin")]
     [HttpPut("deactivate/{id}")]
     public IActionResult DeactivateUser(int id)
