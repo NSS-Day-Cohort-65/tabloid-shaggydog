@@ -145,7 +145,7 @@ public class UserProfileController : ControllerBase
             .ToList()
         }).SingleOrDefault(up => up.Id == id));
     }
-    
+
     [HttpPut("{id}")]
     // [Authorize(Roles = "Admin")]
     public IActionResult EditUserProfile(UserProfile userProfile)
@@ -155,7 +155,8 @@ public class UserProfileController : ControllerBase
         matching.LastName = userProfile.LastName;
         matching.Email = userProfile.Email;
         matching.UserName = userProfile.UserName;
-        
+        _dbContext.SaveChanges();
+        return NoContent();
     }
     [Authorize(Roles = "Admin")]
     [HttpPut("deactivate/{id}")]

@@ -17,6 +17,26 @@ namespace Tabloid.Models
         public Category Category { get; set; }
         public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
-        public List<PostTag>PostTags { get; set; }
+        public List<PostTag> PostTags { get; set; }
+        public string TotalReadingTime
+        {
+            get
+            {
+                string TotalReadingTime = "";
+                string trimmedContent = Content.Trim();
+                string[] words = trimmedContent.Split(new[] { ' ' });
+                int wordCount = words.Length;
+                int readTime = (int)Math.Ceiling((double)wordCount / 265);
+                if (readTime == 1)
+                {
+                    TotalReadingTime += "Approximate read time: 1 minute";
+                }
+                else
+                {
+                    TotalReadingTime += $"Approximate read time: {readTime} minutes";
+                }
+                return TotalReadingTime;
+            }
+        }
     }
 }

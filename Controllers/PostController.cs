@@ -64,9 +64,9 @@ public class PostController : ControllerBase
         if (postToDelete != null)
         {
 
-        _dbContext.Posts.Remove(postToDelete);
-        _dbContext.SaveChanges();
-        return NoContent();
+            _dbContext.Posts.Remove(postToDelete);
+            _dbContext.SaveChanges();
+            return NoContent();
         }
         return NotFound();
 
@@ -80,7 +80,7 @@ public class PostController : ControllerBase
         post.CreateDateTime = DateTime.Now;
         post.PublishDateTime = DateTime.Now;
         post.IsApproved = true;
-        post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up=> up.Id == post.UserProfileId);
+        post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == post.UserProfileId);
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
         return Created($"api/post/{post.Id}", post);
@@ -109,7 +109,7 @@ public class PostController : ControllerBase
         foundPost.UserProfileId = post.UserProfileId;
         _dbContext.SaveChanges();
         return NoContent();
-
+    }
     //approve a post
     [HttpPut("approve/{id}")]
     public IActionResult approvePost(int id)
@@ -126,7 +126,7 @@ public class PostController : ControllerBase
     }
 
     //unapprove a post
-     [HttpPut("unapprove/{id}")]
+    [HttpPut("unapprove/{id}")]
     public IActionResult unApprovePost(int id)
     {
         //find the post to approve from the id
