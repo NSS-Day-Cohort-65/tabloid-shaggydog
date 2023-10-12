@@ -104,7 +104,7 @@ public class PostController : ControllerBase
     {
         post.CreateDateTime = DateTime.Now;
         post.PublishDateTime = DateTime.Now;
-        post.IsApproved = true;
+        post.IsApproved = post.IsApproved;
         post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == post.UserProfileId);
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
