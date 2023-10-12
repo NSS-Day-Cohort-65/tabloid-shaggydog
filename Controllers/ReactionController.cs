@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tabloid.Data;
+using Tabloid.Models;
 
 namespace Tabloid.Controllers;
 
@@ -19,5 +21,21 @@ public class ReactionController : ControllerBase
     public IActionResult Get()
     {
         return Ok(_dbContext.Reactions);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult CreateReaction(Reaction reaction)
+    {
+        try
+        {
+            _dbContext.Reactions.Add(reaction);
+            _dbContext.SaveChanges();
+            return Created($"api/reaction/{reaction.Id}", reaction);
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
     }
 }

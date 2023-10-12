@@ -135,6 +135,7 @@ public class PostController : ControllerBase
         _dbContext.SaveChanges();
         return NoContent();
     }
+
     //approve a post
     [HttpPut("approve/{id}")]
     public IActionResult approvePost(int id)
