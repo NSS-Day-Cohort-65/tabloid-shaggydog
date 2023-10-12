@@ -11,7 +11,8 @@ export const CreatePost = ({ loggedInUser }) => {
         content: "",
         imageLocation: "",
         categoryId: 0,
-        userProfileId: loggedInUser.id
+        userProfileId: loggedInUser.id,
+        isApproved: loggedInUser.roles.includes("Admin") ? true : false
     })
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
