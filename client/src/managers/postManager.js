@@ -21,14 +21,25 @@ export const deletePost = (post) => {
 
 //create a post
 export const createPost = (post) => {
- return fetch(`${_apiURL}`, {
-  method: "POST",
-  headers: {
-   "Content-Type": "application/json",
-  },
-  body: JSON.stringify(post),
- }).then((res) => res.json());
-};
+    return fetch(`${_apiURL}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    }).then((res) => res.json()
+    )
+}
+
+export const editPost = (id, post) => {
+    return fetch(`${_apiURL}/${id}/edit`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    })
+}
 
 //approve post
 export const approvePost = (id) => {

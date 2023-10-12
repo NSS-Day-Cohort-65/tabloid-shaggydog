@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tabloid.Data;
 using Microsoft.EntityFrameworkCore;
 using Tabloid.Models;
+using Tabloid.Models.DTOs;
 
 namespace Tabloid.Controllers;
 
@@ -24,6 +25,7 @@ public class PostController : ControllerBase
         return Ok(_dbContext.Posts
         .Include(p => p.Category)
         .Include(p => p.UserProfile)
+        .Include(p => p.PostReactions)
         .Include(p => p.PostTags)
         .ThenInclude(pt => pt.Tag)
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
@@ -47,12 +49,35 @@ public class PostController : ControllerBase
     //[Authorize]
     public IActionResult GetById(int id)
     {
-        return Ok(_dbContext.Posts
-        .Include(p => p.Category)
-        .Include(p => p.UserProfile)
-        .Include(p => p.PostTags)
+        Post post = _dbContext.Posts
+            .Include(p => p.Category)
+            .Include(p => p.UserProfile)
+            .Include(p => p.PostTags)
             .ThenInclude(pt => pt.Tag)
-        .SingleOrDefault(p => p.Id == id));
+            .Include(p => p.PostReactions)
+            .ThenInclude(pr => pr.Reaction)
+            .Include(p => p.PostReactions)
+            .ThenInclude(pr => pr.UserProfile)
+            .SingleOrDefault(p => p.Id == id);
+
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        post.PostReactionDTOs = post
+            .PostReactions
+            .GroupBy(pr => pr.Reaction)
+            .Select(grp => new PostReactionDTO
+            {
+                Name = grp.Key.Name,
+                ImageLocation = grp.Key.ImageLocation,
+                Count = grp.Count(),
+                ReactedByCurrentUser = grp.Any(pr => pr.UserProfileId == post.UserProfileId),
+                Reaction = grp.Key
+            }).ToList();
+
+        return Ok(post);
     }
 
     //delete a post
@@ -64,9 +89,9 @@ public class PostController : ControllerBase
         if (postToDelete != null)
         {
 
-        _dbContext.Posts.Remove(postToDelete);
-        _dbContext.SaveChanges();
-        return NoContent();
+            _dbContext.Posts.Remove(postToDelete);
+            _dbContext.SaveChanges();
+            return NoContent();
         }
         return NotFound();
 
@@ -80,12 +105,36 @@ public class PostController : ControllerBase
         post.CreateDateTime = DateTime.Now;
         post.PublishDateTime = DateTime.Now;
         post.IsApproved = true;
-        post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up=> up.Id == post.UserProfileId);
+        post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == post.UserProfileId);
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
         return Created($"api/post/{post.Id}", post);
     }
 
+
+    [HttpPut("{id}/edit")]
+    // [Authorize]
+    public IActionResult PutPost(int id, Post post)
+    {
+        Post foundPost = _dbContext.Posts.SingleOrDefault(p => p.Id == id);
+        if (foundPost == null)
+        {
+            return NotFound();
+        }
+        if (id != post.Id)
+        {
+            return BadRequest();
+        }
+
+        foundPost.Title = post.Title;
+        foundPost.Content = post.Content;
+        foundPost.ImageLocation = post.ImageLocation;
+        foundPost.CategoryId = post.CategoryId;
+        foundPost.IsApproved = post.IsApproved;
+        foundPost.UserProfileId = post.UserProfileId;
+        _dbContext.SaveChanges();
+        return NoContent();
+    }
     //approve a post
     [HttpPut("approve/{id}")]
     public IActionResult approvePost(int id)
@@ -102,7 +151,7 @@ public class PostController : ControllerBase
     }
 
     //unapprove a post
-     [HttpPut("unapprove/{id}")]
+    [HttpPut("unapprove/{id}")]
     public IActionResult unApprovePost(int id)
     {
         //find the post to approve from the id
@@ -114,5 +163,6 @@ public class PostController : ControllerBase
             return NoContent();
         }
         return NotFound();
+
     }
 }

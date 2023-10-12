@@ -1,16 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchSinglePost } from "../../managers/postManager";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalHeader, Button } from "reactstrap";
 import { ManagePostTagsModal } from "./ManagePostTagsModal";
 
 import { PostTagModalManager } from "./PostTagModalManager";
 import { createSubscription, endSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
+import { fetchReactions } from "../../managers/reactionManager";
 
 export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
+    const [reactions, setReactions] = useState();
+    const navigate = useNavigate()
     const [userSubscribed, setUserSubscribed] = useState(false);
     const [userSubscription, setUserSubscription] = useState();
 
@@ -24,14 +27,14 @@ export const PostDetails = ({ loggedInUser }) => {
 
     const getSubscriptionStatus = () => {
         fetchUserSubscriptions(loggedInUser.id)
-        .then((res) => {
-            if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
-                setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
-                setUserSubscribed(true);
-            } else {
-                setUserSubscribed(false);
-            }
-        })
+            .then((res) => {
+                if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
+                    setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
+                    setUserSubscribed(true);
+                } else {
+                    setUserSubscribed(false);
+                }
+            })
     }
 
     const handleSubscribe = () => {
@@ -50,7 +53,9 @@ export const PostDetails = ({ loggedInUser }) => {
     }
 
     useEffect(() => {
-        getPostById();
+        fetchReactions().then(setReactions).then(() => {
+            getPostById();
+        });
     }, []);
 
     useEffect(() => {
@@ -70,28 +75,54 @@ export const PostDetails = ({ loggedInUser }) => {
             <p>{post.content}</p>
             <p>
                 Published: {post.publishDateTime}, Author: {post.userProfile.fullName}
+                <p>{post.totalReadingTime}</p>
             </p>
+            <div className="postReactions">
+                {reactions.map((r) => (
+                    <span key={`postReaction--${r.id}`}>
+                        <img
+                            src={`${r.imageLocation}`}
+                            alt={`${r.name}`}
+                            id="postReaction"
+                            width={25}
+                            height={25}
+                        />
+                        {
+                            post.postReactionDTOs.find((prdto) => (
+                                prdto.name === r.name
+                            ))
+                                ?
+                                post.postReactionDTOs.find((prdto) => (prdto.name === r.name)).count
+                                :
+                                ""
+                        }
+                    </span>
+                ))}
+            </div>
 
             <Button
-            color="link"
-            onClick={() => {
-                handleSubscribe();
-            }}
+                color="link"
+                onClick={() => {
+                    handleSubscribe();
+                }}
             >
                 {
                     userSubscribed
-                    ?
-                    "Unsubscribe"
-                    :
-                    "Subscribe"
+                        ?
+                        "Unsubscribe"
+                        :
+                        "Subscribe"
                 }
             </Button>
-            
+
             {loggedInUser?.id === post?.userProfileId ? (
                 <>
                     <Button
                         onClick={() => { toggleTagsModal() }}>
                         Manage Tags
+                    </Button>
+                    <Button onClick={() => { navigate("edit") }}>
+                        Edit Post
                     </Button>
                     <Modal isOpen={tagsModalOpen} toggle={toggleTagsModal}>
                         <ModalHeader toggle={toggleTagsModal}>Manage Tags</ModalHeader>

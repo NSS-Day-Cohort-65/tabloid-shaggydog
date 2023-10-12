@@ -142,13 +142,14 @@ public class UserProfileController : ControllerBase
             UserName = up.IdentityUser.UserName,
             IdentityUserId = up.IdentityUserId,
             ImageLocation = up.ImageLocation,
+            IsActive = up.IsActive,
             Roles = _dbContext.UserRoles
             .Where(ur => ur.UserId == up.IdentityUserId)
             .Select(ur => _dbContext.Roles.SingleOrDefault(r => r.Id == ur.RoleId).Name)
             .ToList()
         }).SingleOrDefault(up => up.Id == id));
     }
-    
+
     [HttpPut("{id}")]
     // [Authorize(Roles = "Admin")]
     public IActionResult EditUserProfile(UserProfile userProfile)
@@ -159,7 +160,7 @@ public class UserProfileController : ControllerBase
         matching.Email = userProfile.Email;
         matching.UserName = userProfile.UserName;
         _dbContext.SaveChanges();
-        return NoContent();   
+        return NoContent();
     }
 
     [Authorize(Roles = "Admin")]

@@ -12,9 +12,11 @@ import { MyPosts } from "./posts/MyPosts";
 import { PostDetails } from "./posts/PostDetails";
 import { CreatePost } from "./posts/CreatePost";
 import { PostComments } from "./posts/comments/PostComments";
+import { EditPost } from "./posts/EditPost";
 import { UserProfileEdit } from "./userprofiles/UserProfileEdit";
 import UserProfilesShowDeactivated from "./userprofiles/UserProfilesShowDeactivated";
 import { NotApprovedPosts } from "./posts/NotApprovedPosts.js"
+import { ReactionList } from "./reactions/ReactionList";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -55,12 +57,21 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     }
                 />
                 <Route
-                    path="myposts"
+                    path="/posts/:id/edit"
                     element={
                         <AuthorizedRoute loggedInUser={loggedInUser}>
-                            <MyPosts loggedInUser={loggedInUser} />
+                            <EditPost />
                         </AuthorizedRoute>
                     }
+                />
+
+                <Route
+                 path="myposts"
+                 element={
+                  <AuthorizedRoute loggedInUser={loggedInUser}>
+                   <MyPosts loggedInUser={loggedInUser}/>
+                  </AuthorizedRoute>
+                 }
                 />
                 <Route
                     path="createpost"
@@ -112,6 +123,16 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                             </AuthorizedRoute>
                         }
                 />
+                <Route path="/reactions">
+                    <Route 
+                        index
+                        element={
+                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                                <ReactionList loggedInUser={loggedInUser}/>
+                            </AuthorizedRoute>
+                        }
+                    />
+                </Route>
                 <Route path="/categories">
                     <Route
                         index

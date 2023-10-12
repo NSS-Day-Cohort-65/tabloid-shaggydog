@@ -59,6 +59,13 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         )}
         {loggedInUser.roles.includes("Admin") && (
          <NavItem>
+          <NavLink tag={RRNavLink} to="/reactions">
+            Reaction Management
+          </NavLink>
+         </NavItem>
+        )}
+        {loggedInUser.roles.includes("Admin") && (
+         <NavItem>
           <NavLink tag={RRNavLink} to="/tags">
            Tag Management
           </NavLink>
