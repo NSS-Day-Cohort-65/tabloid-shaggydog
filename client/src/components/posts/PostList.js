@@ -5,37 +5,59 @@ import { Button } from "reactstrap";
 import ConfirmDeletePostModal from "./ConfirmDeletePostModal";
 import { PostTagModalManager } from "./PostTagModalManager";
 import { ReactComponent as CommentsIcon } from "../../svg/commentsIcon.svg";
+import { getProfiles } from "../../managers/userProfileManager";
 
 export const PostList = ({ loggedInUser }) => {
- const [posts, setPosts] = useState();
+ const [users, setUsers] = useState([]);
+ const [posts, setPosts] = useState([]);
+ const [filteredPosts, setFilteredPosts] = useState([]);
  const navigate = useNavigate();
 
  /*  console.log(loggedInUser); */
  async function getData() {
   fetchPosts().then(setPosts);
+  getProfiles().then(setUsers);
  }
-
+ //get original post data
  useEffect(() => {
   getData();
  }, []);
-
- if (!posts) return;
-
- if (posts.length < 1) {
-  return "";
- }
+ // once posts are gotten default the filtered posts to posts.
+ useEffect(() => {
+  setFilteredPosts(posts);
+ }, [posts]);
 
  const handleUnApproveButton = (id) => {
   unApprovePost(id).then(() => {
    getData();
   });
  };
+
+ const handleSelectUser = (e) => {
+  e.preventDefault();
+  console.log(e.target.value);
+  if (e.target.value === "default") {
+   setFilteredPosts(posts);
+   return;
+  }
+  setFilteredPosts(posts.filter((p) => p.userProfileId == e.target.value));
+ };
+ if (!posts || !users) return;
  return (
   <>
    <h1>Post List</h1>
-
+   <h5>Filter By User</h5>
+   <select onChange={handleSelectUser}>
+    <option disabled selected>
+     Select A User
+    </option>
+    <option value={"default"}>View All Posts</option>
+    {users.map((user) => {
+     return <option value={user.id}>{user.fullName}</option>;
+    })}
+   </select>
    <div id="postListContainer">
-    {posts.map((p) => (
+    {filteredPosts.map((p) => (
      <div key={p.id} className="postContainer">
       <Button
        onClick={() => {
@@ -72,7 +94,6 @@ export const PostList = ({ loggedInUser }) => {
        {loggedInUser?.roles.includes("Admin") ? (
         <>
          <ConfirmDeletePostModal post={p} getData={getData} />
-
          <Button
           color="danger"
           onClick={() => {
