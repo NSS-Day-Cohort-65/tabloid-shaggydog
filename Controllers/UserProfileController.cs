@@ -123,7 +123,40 @@ public class UserProfileController : ControllerBase
         user.UserName = user.IdentityUser.UserName;
         return Ok(user);
     }
-
+    [HttpGet("withroles/{id}")]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult GetWithByIDRoles(int id)
+    {
+        return Ok(_dbContext.UserProfiles
+        .Include(up => up.IdentityUser)
+        .Select(up => new UserProfile
+        {
+            Id = up.Id,
+            FirstName = up.FirstName,
+            CreateDateTime = up.CreateDateTime,
+            LastName = up.LastName,
+            Email = up.IdentityUser.Email,
+            UserName = up.IdentityUser.UserName,
+            IdentityUserId = up.IdentityUserId,
+            ImageLocation = up.ImageLocation,
+            Roles = _dbContext.UserRoles
+            .Where(ur => ur.UserId == up.IdentityUserId)
+            .Select(ur => _dbContext.Roles.SingleOrDefault(r => r.Id == ur.RoleId).Name)
+            .ToList()
+        }).SingleOrDefault(up => up.Id == id));
+    }
+    
+    [HttpPut("{id}")]
+    // [Authorize(Roles = "Admin")]
+    public IActionResult EditUserProfile(UserProfile userProfile)
+    {
+        UserProfile matching = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == userProfile.Id);
+        matching.FirstName = userProfile.FirstName;
+        matching.LastName = userProfile.LastName;
+        matching.Email = userProfile.Email;
+        matching.UserName = userProfile.UserName;
+        
+    }
     [Authorize(Roles = "Admin")]
     [HttpPut("deactivate/{id}")]
     public IActionResult DeactivateUser(int id)

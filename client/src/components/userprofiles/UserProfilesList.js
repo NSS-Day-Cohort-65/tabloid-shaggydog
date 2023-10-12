@@ -30,6 +30,7 @@ export default function UserProfileList({ loggedInUser }) {
               <th>Display Name</th>
               <th>Admin?</th>
               <th></th>
+              <th></th>
               <th>Active?</th>
             </tr>
           </thead>
@@ -40,8 +41,8 @@ export default function UserProfileList({ loggedInUser }) {
                 <td>{up.fullName}</td>
                 <td>{up.userName}</td>
                 <td>{up.roles}</td>
-
                 <td> <Link to={`/userprofiles/${up.id}`}>Details</Link></td>
+                <td> <Link to={`/userprofiles/edit/${up.id}`}>Edit</Link></td>
                 <td>{up.isActive.toString()}</td>
                 {up.isActive ? (
                   <td>
