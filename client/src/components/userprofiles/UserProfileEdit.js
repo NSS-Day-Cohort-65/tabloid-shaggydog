@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { demoteProfile, editProfile, getProfileAndRoles, promoteProfile } from "../../managers/userProfileManager"
-import { Button } from "reactstrap"
+import { Alert, Button } from "reactstrap"
 
 
 export const UserProfileEdit = () => {
@@ -21,6 +21,7 @@ export const UserProfileEdit = () => {
     const demoteUserClick = (evt) => {
         evt.preventDefault()
         demoteProfile(parseInt(id)).then(render())
+        .catch(Window.Alert("You're the only admin left!"))
     }
 
     const handleSave = (evt) => {

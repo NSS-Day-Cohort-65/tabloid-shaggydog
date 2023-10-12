@@ -100,10 +100,13 @@ public class UserProfileController : ControllerBase
             .SingleOrDefault(ur =>
                 ur.RoleId == role.Id &&
                 ur.UserId == id);
-        //if (_dbContext.UserRoles.Where(ur => ur.RoleId == role.Id))
-        _dbContext.UserRoles.Remove(userRole);
-        _dbContext.SaveChanges();
-        return NoContent();
+        if (_dbContext.UserRoles.Where(ur => ur.RoleId == role.Id).Count() > 1){
+            _dbContext.UserRoles.Remove(userRole);
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return StatusCode(418, "You're the only admin left!");
+        
     }
 
     [Authorize]

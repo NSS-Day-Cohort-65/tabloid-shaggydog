@@ -22,7 +22,15 @@ export const promoteProfile = (id) => {
 }
 
 export const demoteProfile = (id) => {
-  return fetch(`${_apiUrl}/demote/${id}`).then((res) => res.json());
+  return fetch(`${_apiUrl}/demote/${id}`).then((res) => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      return res.text().then(error => {
+        throw new Error(error)
+      })
+    }
+  });
 }
 
 export const editProfile = (profile) => {
