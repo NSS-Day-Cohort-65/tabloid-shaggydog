@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchSinglePost } from "../../managers/postManager";
 import { useEffect, useState } from "react";
 import { Modal, ModalHeader, Button } from "reactstrap";
@@ -11,6 +11,7 @@ export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
     const [post, setPost] = useState();
     const [tagsModalOpen, setTagsModalOpen] = useState(false)
+    const navigate = useNavigate()
     const [userSubscribed, setUserSubscribed] = useState(false);
     const [userSubscription, setUserSubscription] = useState();
 
@@ -92,6 +93,9 @@ export const PostDetails = ({ loggedInUser }) => {
                     <Button
                         onClick={() => { toggleTagsModal() }}>
                         Manage Tags
+                    </Button>
+                    <Button onClick={() => {navigate("edit")}}>
+                      Edit Post
                     </Button>
                     <Modal isOpen={tagsModalOpen} toggle={toggleTagsModal}>
                         <ModalHeader toggle={toggleTagsModal}>Manage Tags</ModalHeader>

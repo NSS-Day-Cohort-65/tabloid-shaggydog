@@ -86,6 +86,30 @@ public class PostController : ControllerBase
         return Created($"api/post/{post.Id}", post);
     }
 
+
+    [HttpPut("{id}/edit")]
+    // [Authorize]
+    public IActionResult PutPost(int id, Post post)
+    {
+        Post foundPost = _dbContext.Posts.SingleOrDefault(p => p.Id == id);
+        if (foundPost == null)
+        {
+            return NotFound();
+        }
+        if (id != post.Id)
+        {
+            return BadRequest();
+        }
+
+        foundPost.Title = post.Title;
+        foundPost.Content = post.Content;
+        foundPost.ImageLocation = post.ImageLocation;
+        foundPost.CategoryId = post.CategoryId;
+        foundPost.IsApproved = post.IsApproved;
+        foundPost.UserProfileId = post.UserProfileId;
+        _dbContext.SaveChanges();
+        return NoContent();
+
     //approve a post
     [HttpPut("approve/{id}")]
     public IActionResult approvePost(int id)
@@ -114,5 +138,6 @@ public class PostController : ControllerBase
             return NoContent();
         }
         return NotFound();
+
     }
 }
