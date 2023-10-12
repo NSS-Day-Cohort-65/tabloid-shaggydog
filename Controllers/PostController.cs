@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tabloid.Data;
 using Microsoft.EntityFrameworkCore;
 using Tabloid.Models;
+using Tabloid.Models.DTOs;
 
 namespace Tabloid.Controllers;
 
@@ -24,6 +25,7 @@ public class PostController : ControllerBase
         return Ok(_dbContext.Posts
         .Include(p => p.Category)
         .Include(p => p.UserProfile)
+        .Include(p => p.PostReactions)
         .Include(p => p.PostTags)
         .ThenInclude(pt => pt.Tag)
         .Where(p => p.PublishDateTime != null && p.IsApproved == true)
@@ -47,12 +49,35 @@ public class PostController : ControllerBase
     //[Authorize]
     public IActionResult GetById(int id)
     {
-        return Ok(_dbContext.Posts
-        .Include(p => p.Category)
-        .Include(p => p.UserProfile)
-        .Include(p => p.PostTags)
+        Post post = _dbContext.Posts
+            .Include(p => p.Category)
+            .Include(p => p.UserProfile)
+            .Include(p => p.PostTags)
             .ThenInclude(pt => pt.Tag)
-        .SingleOrDefault(p => p.Id == id));
+            .Include(p => p.PostReactions)
+            .ThenInclude(pr => pr.Reaction)
+            .Include(p => p.PostReactions)
+            .ThenInclude(pr => pr.UserProfile)
+            .SingleOrDefault(p => p.Id == id);
+
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        post.PostReactionDTOs = post
+            .PostReactions
+            .GroupBy(pr => pr.Reaction)
+            .Select(grp => new PostReactionDTO
+            {
+                Name = grp.Key.Name,
+                ImageLocation = grp.Key.ImageLocation,
+                Count = grp.Count(),
+                ReactedByCurrentUser = grp.Any(pr => pr.UserProfileId == post.UserProfileId),
+                Reaction = grp.Key
+            }).ToList();
+
+        return Ok(post);
     }
 
     //delete a post
