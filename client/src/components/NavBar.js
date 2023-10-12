@@ -64,6 +64,13 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
           </NavLink>
          </NavItem>
         )}
+        {loggedInUser.roles.includes("Admin") && (
+         <NavItem>
+          <NavLink tag={RRNavLink} to="/unapprovedPosts">
+           Unapproved Posts
+          </NavLink>
+         </NavItem>
+        )}
        </Nav>
       </Collapse>
       <Button
