@@ -20,8 +20,10 @@ export const UserProfileEdit = () => {
 
     const demoteUserClick = (evt) => {
         evt.preventDefault()
-        demoteProfile(parseInt(id)).then(render())
+        demoteProfile(parseInt(id))
         .catch(Window.Alert("You're the only admin left!"))
+        .then(render())
+        
     }
 
     const handleSave = (evt) => {
