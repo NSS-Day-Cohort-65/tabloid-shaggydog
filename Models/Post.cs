@@ -23,7 +23,8 @@ namespace Tabloid.Models
         public List<PostReaction> PostReactions { get; set; }
         [NotMapped]
         public List<PostReactionDTO> PostReactionDTOs { get; set; }
-  public string TotalReadingTime
+
+        public string TotalReadingTime
         {
             get
             {

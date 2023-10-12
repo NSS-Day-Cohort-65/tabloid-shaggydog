@@ -27,14 +27,14 @@ export const PostDetails = ({ loggedInUser }) => {
 
     const getSubscriptionStatus = () => {
         fetchUserSubscriptions(loggedInUser.id)
-        .then((res) => {
-            if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
-                setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
-                setUserSubscribed(true);
-            } else {
-                setUserSubscribed(false);
-            }
-        })
+            .then((res) => {
+                if (res.find(s => s.providerUserProfileId === post.userProfileId && s.endDateTime === null)) {
+                    setUserSubscription(res.find(s => s.providerUserProfileId === post.userProfileId));
+                    setUserSubscribed(true);
+                } else {
+                    setUserSubscribed(false);
+                }
+            })
     }
 
     const handleSubscribe = () => {
@@ -75,53 +75,54 @@ export const PostDetails = ({ loggedInUser }) => {
             <p>{post.content}</p>
             <p>
                 Published: {post.publishDateTime}, Author: {post.userProfile.fullName}
+                <p>{post.totalReadingTime}</p>
             </p>
             <div className="postReactions">
                 {reactions.map((r) => (
                     <span key={`postReaction--${r.id}`}>
-                        <img 
-                            src={`${r.imageLocation}`} 
+                        <img
+                            src={`${r.imageLocation}`}
                             alt={`${r.name}`}
                             id="postReaction"
                             width={25}
                             height={25}
-                            />
+                        />
                         {
                             post.postReactionDTOs.find((prdto) => (
                                 prdto.name === r.name
                             ))
-                            ?
-                            post.postReactionDTOs.find((prdto) => (prdto.name === r.name)).count
-                            :
-                            ""
+                                ?
+                                post.postReactionDTOs.find((prdto) => (prdto.name === r.name)).count
+                                :
+                                ""
                         }
                     </span>
                 ))}
             </div>
 
             <Button
-            color="link"
-            onClick={() => {
-                handleSubscribe();
-            }}
+                color="link"
+                onClick={() => {
+                    handleSubscribe();
+                }}
             >
                 {
                     userSubscribed
-                    ?
-                    "Unsubscribe"
-                    :
-                    "Subscribe"
+                        ?
+                        "Unsubscribe"
+                        :
+                        "Subscribe"
                 }
             </Button>
-            
+
             {loggedInUser?.id === post?.userProfileId ? (
                 <>
                     <Button
                         onClick={() => { toggleTagsModal() }}>
                         Manage Tags
                     </Button>
-                    <Button onClick={() => {navigate("edit")}}>
-                      Edit Post
+                    <Button onClick={() => { navigate("edit") }}>
+                        Edit Post
                     </Button>
                     <Modal isOpen={tagsModalOpen} toggle={toggleTagsModal}>
                         <ModalHeader toggle={toggleTagsModal}>Manage Tags</ModalHeader>

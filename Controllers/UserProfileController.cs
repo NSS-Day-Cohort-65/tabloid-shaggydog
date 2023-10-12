@@ -139,6 +139,7 @@ public class UserProfileController : ControllerBase
             UserName = up.IdentityUser.UserName,
             IdentityUserId = up.IdentityUserId,
             ImageLocation = up.ImageLocation,
+            IsActive = up.IsActive,
             Roles = _dbContext.UserRoles
             .Where(ur => ur.UserId == up.IdentityUserId)
             .Select(ur => _dbContext.Roles.SingleOrDefault(r => r.Id == ur.RoleId).Name)
