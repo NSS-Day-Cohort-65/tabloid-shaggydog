@@ -100,7 +100,7 @@ public class UserProfileController : ControllerBase
             .SingleOrDefault(ur =>
                 ur.RoleId == role.Id &&
                 ur.UserId == id);
-
+        //if (_dbContext.UserRoles.Where(ur => ur.RoleId == role.Id))
         _dbContext.UserRoles.Remove(userRole);
         _dbContext.SaveChanges();
         return NoContent();
@@ -155,9 +155,10 @@ public class UserProfileController : ControllerBase
         matching.LastName = userProfile.LastName;
         matching.Email = userProfile.Email;
         matching.UserName = userProfile.UserName;
+        _dbContext.SaveChanges();
         return NoContent();   
     }
-    
+
     [Authorize(Roles = "Admin")]
     [HttpPut("deactivate/{id}")]
     public IActionResult DeactivateUser(int id)
