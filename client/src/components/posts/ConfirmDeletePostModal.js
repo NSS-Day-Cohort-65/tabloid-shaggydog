@@ -24,7 +24,7 @@ function ConfirmDeletePostModal({ post, getData }) {
     <ModalHeader toggle={toggle}>Confirm Delete</ModalHeader>
     <ModalBody>Are You Sure You Want To Delete This Post?</ModalBody>
     <ModalFooter>
-     <Button color="danger" onClick={toggle}>
+     <Button color="danger" onClick={handleDeleteButton}>
       Confirm Delete
      </Button>{" "}
      <Button color="secondary" onClick={toggle}>
