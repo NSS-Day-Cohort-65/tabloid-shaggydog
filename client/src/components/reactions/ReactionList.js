@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
 import { fetchReactions } from "../../managers/reactionManager";
-import { Button, Table } from "reactstrap";
+import { Button, Modal, ModalHeader, Table } from "reactstrap";
+import { CreateReactionModal } from "./CreateReactionModal";
 
 export const ReactionList = ({ loggedInUser }) => {
     const [reactions, setReactions] = useState();
+
+    const [createModal, setCreateModal] = useState(false);
+    const toggle = () => {setCreateModal(!createModal)};
 
     const getAllReactions = () => {
         fetchReactions().then(setReactions);
@@ -47,9 +51,16 @@ export const ReactionList = ({ loggedInUser }) => {
                         ))}
                     </tbody>
                 </Table>
-                <Button>
+                <Button
+                color="success"
+                onClick={toggle}
+                >
                     Create Reaction
                 </Button>
+                <Modal isOpen={createModal} toggle={toggle}>
+                    <ModalHeader toggle={toggle}>Add Reaction</ModalHeader>
+                    <CreateReactionModal toggle={toggle} getAllReactions={getAllReactions}/>
+                </Modal>
             </div>
         </div>
     )
