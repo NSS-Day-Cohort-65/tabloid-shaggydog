@@ -17,12 +17,26 @@ export const getProfileAndRoles = (id) => {
 };
 
 export const promoteProfile = (id) => {
- return fetch(`${_apiUrl}/promote/${id}`).then((res) => res.json());
-};
+  return fetch(`${_apiUrl}/promote/${id}`,  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  }).then((res)=> res.json())
+}
 
 export const demoteProfile = (id) => {
- return fetch(`${_apiUrl}/demote/${id}`).then((res) => res.json());
-};
+  return fetch(`${_apiUrl}/demote/${id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      return res.text().then(error => {
+        throw new Error(error)
+      })
+    }
+  });
+}
 
 export const editProfile = (profile) => {
  return fetch(`${_apiUrl}/${profile.id}`, {

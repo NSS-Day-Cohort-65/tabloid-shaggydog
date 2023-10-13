@@ -6,7 +6,7 @@ import { ManagePostTagsModal } from "./ManagePostTagsModal";
 
 import { PostTagModalManager } from "./PostTagModalManager";
 import { createSubscription, endSubscription, fetchUserSubscriptions } from "../../managers/subscriptionManager";
-import { fetchReactions } from "../../managers/reactionManager";
+import { deletePostReaction, fetchPostReactions, fetchReactions, postPostReaction } from "../../managers/reactionManager";
 
 export const PostDetails = ({ loggedInUser }) => {
     const { id } = useParams();
@@ -24,6 +24,25 @@ export const PostDetails = ({ loggedInUser }) => {
     const getPostById = () => {
         fetchSinglePost(parseInt(id)).then(setPost);
     };
+
+    const getPostReactions = () => {
+        fetchPostReactions(id).then(setReactions);
+    };
+
+    const handlePostReaction = (reactionId) => {
+        if (reactions[reactionId - 1].reactedByCurrentUser)
+        {
+            deletePostReaction(post.id, reactionId, loggedInUser.id).then(getPostReactions);
+        } else {
+            const newPostReaction = {
+                postId: post.id,
+                reactionId,
+                userProfileId: loggedInUser.id
+            }
+
+            postPostReaction(newPostReaction).then(getPostReactions);
+        }
+    }
 
     const getSubscriptionStatus = () => {
         fetchUserSubscriptions(loggedInUser.id)
@@ -53,9 +72,8 @@ export const PostDetails = ({ loggedInUser }) => {
     }
 
     useEffect(() => {
-        fetchReactions().then(setReactions).then(() => {
-            getPostById();
-        });
+        getPostById();
+        getPostReactions();
     }, []);
 
     useEffect(() => {
@@ -64,7 +82,7 @@ export const PostDetails = ({ loggedInUser }) => {
         }
     }, [post]);
 
-    if (!post) {
+    if (!post || !reactions) {
         return ``;
     }
 
@@ -86,16 +104,11 @@ export const PostDetails = ({ loggedInUser }) => {
                             id="postReaction"
                             width={25}
                             height={25}
+                            onClick={() => {
+                                handlePostReaction(r.id);
+                            }}
                         />
-                        {
-                            post.postReactionDTOs.find((prdto) => (
-                                prdto.name === r.name
-                            ))
-                                ?
-                                post.postReactionDTOs.find((prdto) => (prdto.name === r.name)).count
-                                :
-                                ""
-                        }
+                        {r.count}
                     </span>
                 ))}
             </div>

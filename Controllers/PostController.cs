@@ -4,6 +4,7 @@ using Tabloid.Data;
 using Microsoft.EntityFrameworkCore;
 using Tabloid.Models;
 using Tabloid.Models.DTOs;
+using System.Security.Claims;
 
 namespace Tabloid.Controllers;
 
@@ -80,6 +81,30 @@ public class PostController : ControllerBase
         return Ok(post);
     }
 
+    [HttpGet("postreactions/{id}")]
+    [Authorize]
+    public IActionResult GetPostReactions(int id)
+    {
+        var user = _dbContext
+            .UserProfiles
+            .SingleOrDefault(up => up.IdentityUserId == User.FindFirst
+            (ClaimTypes.NameIdentifier).Value);
+
+        var reactionsWithCountForPost = _dbContext.Reactions
+            .Include(r => r.PostReactions.Where(r => r.PostId == id))
+            .Select(r => new
+            {
+                r.Name,
+                r.ImageLocation,
+                r.Id,
+                Count = r.PostReactions.Where(r => r.PostId == id).Count(),
+                ReactedByCurrentUser = r.PostReactions.Any(pr => pr.
+                UserProfileId == user.Id && pr.PostId == id)
+            }).ToList();
+
+            return Ok(reactionsWithCountForPost);
+    }
+
     //delete a post
     [HttpDelete("{postId}")]
     public IActionResult DeletePost(int postId)
@@ -104,7 +129,7 @@ public class PostController : ControllerBase
     {
         post.CreateDateTime = DateTime.Now;
         post.PublishDateTime = DateTime.Now;
-        post.IsApproved = true;
+        post.IsApproved = post.IsApproved;
         post.UserProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == post.UserProfileId);
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
@@ -135,6 +160,7 @@ public class PostController : ControllerBase
         _dbContext.SaveChanges();
         return NoContent();
     }
+
     //approve a post
     [HttpPut("approve/{id}")]
     public IActionResult approvePost(int id)
