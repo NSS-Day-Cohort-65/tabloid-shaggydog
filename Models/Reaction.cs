@@ -9,5 +9,6 @@ namespace Tabloid.Models
         public string Name { get; set; }
         [Required]
         public string ImageLocation { get; set; }
+        public List<PostReaction> PostReactions { get; set; }
     }
 }

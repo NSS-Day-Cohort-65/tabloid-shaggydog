@@ -51,7 +51,7 @@ export const PostTagModalManager = ({ post, getData }) => {
        Select New Tag
       </option>
       {tags.map((tag) => {
-       return <option value={tag.id}>{tag.name}</option>;
+       return <option key={tag.id} value={tag.id}>{tag.name}</option>;
       })}
      </select>
     </ModalBody>
