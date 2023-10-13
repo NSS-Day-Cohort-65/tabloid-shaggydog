@@ -31,11 +31,12 @@ public class SubscriptionController : ControllerBase
     public IActionResult GetByUserId(int userId)
     {
         UserProfile userProfile = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == userId);
-        if (userProfile != null) 
+        if (userProfile != null)
         {
             return Ok(_dbContext.Subscriptions
                 .Include(s => s.SubscriberUserProfile)
                 .Include(s => s.ProviderUserProfile)
+                .ThenInclude(up => up.Posts)
                 .Where(s => s.SubscriberUserProfileId == userId));
         }
 
@@ -47,7 +48,7 @@ public class SubscriptionController : ControllerBase
     public IActionResult CreateSubscription(Subscription subscription)
     {
         subscription.BeginDateTime = DateTime.Now;
-        
+
         _dbContext.Subscriptions.Add(subscription);
         _dbContext.SaveChanges();
         return Created($"api/subscriptions/{subscription.Id}", subscription);

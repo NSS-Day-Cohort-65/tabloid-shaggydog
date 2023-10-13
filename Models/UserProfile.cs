@@ -43,4 +43,5 @@ public class UserProfile
     }
 
     public bool IsActive { get; set; }
+    public List<Post> Posts { get; set; }
 }
