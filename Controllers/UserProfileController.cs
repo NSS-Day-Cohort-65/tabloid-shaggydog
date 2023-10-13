@@ -192,4 +192,20 @@ public class UserProfileController : ControllerBase
         _dbContext.SaveChanges();
         return NoContent();
     }
+    [HttpPut("updateImage/{userId}")]
+    [Authorize]
+    public IActionResult updateImage(int userId, [FromBody]string imglocation)
+    {
+        //find the user to update. 
+        UserProfile userProfileToUpdate = _dbContext.UserProfiles.SingleOrDefault(up => up.Id == userId);
+        if (userProfileToUpdate != null)
+        {
+            userProfileToUpdate.ImageLocation = imglocation;
+            _dbContext.SaveChanges();
+            return NoContent();
+        }
+        return NotFound();
+    }
+    //update useprofile image location
+    
 }

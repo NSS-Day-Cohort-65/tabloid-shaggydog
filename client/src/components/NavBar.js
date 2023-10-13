@@ -11,6 +11,7 @@ import {
  NavbarToggler,
 } from "reactstrap";
 import { logout } from "../managers/authManager";
+import ModalForPicture from "./ModalForPicture";
 
 export default function NavBar({ loggedInUser, setLoggedInUser }) {
  const [open, setOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         {loggedInUser.roles.includes("Admin") && (
          <NavItem>
           <NavLink tag={RRNavLink} to="/reactions">
-            Reaction Management
+           Reaction Management
           </NavLink>
          </NavItem>
         )}
@@ -80,6 +81,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
         )}
        </Nav>
       </Collapse>
+      <ModalForPicture loggedInUser={loggedInUser} />
       <Button
        color="primary"
        onClick={(e) => {
@@ -93,6 +95,10 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
       >
        Logout
       </Button>
+      <img
+       src={loggedInUser?.imageLocation}
+       style={{ width: "50px", height: "50px" }}
+      />
      </>
     ) : (
      <Nav navbar>
