@@ -6,6 +6,8 @@ export const fetchSubscriptions = () => {
 
 export const fetchUserSubscriptions = (userId) => {
     return fetch(`${_apiURL}/user/${userId}`).then((res) => res.json());
+
+
 };
 
 export const createSubscription = (subscription) => {

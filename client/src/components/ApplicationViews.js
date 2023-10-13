@@ -17,6 +17,7 @@ import { UserProfileEdit } from "./userprofiles/UserProfileEdit";
 import UserProfilesShowDeactivated from "./userprofiles/UserProfilesShowDeactivated";
 import { NotApprovedPosts } from "./posts/NotApprovedPosts.js"
 import { ReactionList } from "./reactions/ReactionList";
+import { SubscriptionList } from "./posts/SubscriptionList";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
     return (
@@ -26,7 +27,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     index
                     element={
                         <AuthorizedRoute loggedInUser={loggedInUser}>
-                            <PostList loggedInUser={loggedInUser} />
+                            <SubscriptionList loggedInUser={loggedInUser} />
                         </AuthorizedRoute>
                     }
                 />
@@ -66,12 +67,12 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                 />
 
                 <Route
-                 path="myposts"
-                 element={
-                  <AuthorizedRoute loggedInUser={loggedInUser}>
-                   <MyPosts loggedInUser={loggedInUser}/>
-                  </AuthorizedRoute>
-                 }
+                    path="myposts"
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser}>
+                            <MyPosts loggedInUser={loggedInUser} />
+                        </AuthorizedRoute>
+                    }
                 />
                 <Route
                     path="createpost"
@@ -116,19 +117,19 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
                     />
                 </Route>
                 <Route
-                        path='/userprofiles/edit/:id'
-                        element={
-                            <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                                <UserProfileEdit />
-                            </AuthorizedRoute>
-                        }
+                    path='/userprofiles/edit/:id'
+                    element={
+                        <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
+                            <UserProfileEdit />
+                        </AuthorizedRoute>
+                    }
                 />
                 <Route path="/reactions">
-                    <Route 
+                    <Route
                         index
                         element={
                             <AuthorizedRoute loggedInUser={loggedInUser} roles={["Admin"]}>
-                                <ReactionList loggedInUser={loggedInUser}/>
+                                <ReactionList loggedInUser={loggedInUser} />
                             </AuthorizedRoute>
                         }
                     />
